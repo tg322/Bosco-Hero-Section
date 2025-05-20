@@ -1,0 +1,18 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "18.18.2",
+    "sdksVersions": {},
+    "version": "1.21.1",
+    "libraryName": "bosco-hero-section",
+    "libraryId": "ecf6213b-0bdd-4346-b4d9-9b8b3c9f776f",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "bosco-hero-section",
+    "solutionShortDescription": "bosco-hero-section description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

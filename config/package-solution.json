@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "bosco-hero-section-client-side-solution",
+    "id": "ecf6213b-0bdd-4346-b4d9-9b8b3c9f776f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.21.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "bosco-hero-section description"
+      },
+      "longDescription": {
+        "default": "bosco-hero-section description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "bosco-hero-section Feature",
+        "description": "The feature that activates elements of the bosco-hero-section solution.",
+        "id": "283ea937-8fbc-429d-bdca-f5a02bbd0662",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/bosco-hero-section.sppkg"
+  }
+}

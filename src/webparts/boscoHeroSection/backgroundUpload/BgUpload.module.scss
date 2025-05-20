@@ -1,0 +1,154 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+   .imageUploadContainer{
+    display: flex;
+    flex-direction: column;
+    
+    padding-top:5px;
+    div.imageUploadButtonContainer{
+      border-top:solid 1px lightgray;
+      padding-top:5px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      label{
+        display: flex;
+        flex-direction: row;
+        div{
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          i{
+            font-size: 18px;
+          }
+        }
+      }
+      div{
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        i{
+          font-size: 18px;
+        }
+      }
+  }
+
+
+  .imagePreviewContainer{
+    display: flex;
+    flex-direction: column;
+    background-color:#ebebeb;
+      img.imagePreview{
+      max-width:100%;
+      max-height: 200px;
+      object-fit: cover;
+      object-position: center;
+    }
+    img.imagePreview:hover{
+      object-fit: contain;
+    }
+}
+
+
+    
+    input{
+      display: none;
+    }
+  
+  }
+
+  .modal{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,.611764705882353);
+    display: flex;
+    z-index:999;
+    .modalContainer{
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      height: 300px;
+      width: 400px;
+      padding: 25px;
+      align-items: flex-start;
+      justify-content: flex-start;
+      h2{
+        font-weight: 600;
+        margin-top: 0;
+        font-size: 20px;
+      }
+      p{
+        margin-top: 0;
+      }
+      .modalContainerInner{
+        display: flex;
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 100%;
+      }
+        .modalContainerButtons{
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: flex-end;
+          .deleteButton{
+            background-color: #a4262c;
+            border: 1px solid #a4262c;
+            color: #fff;
+            outline: transparent;
+            position: relative;
+            font-size: 14px;
+            font-weight: 600;
+            box-sizing: border-box;
+            border: 1px solid #8a8886;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            padding: 0 16px;
+            border-radius: 2px;
+            min-width: 80px;
+            height: 32px;
+            margin: 0 10px;
+          }
+          .deleteButton:hover{
+            background-color: #832024;
+            border: 1px solid #832024;
+          }
+          .cancelButton{
+            outline: transparent;
+            position: relative;
+            font-size: 14px;
+            font-weight: 600;
+            box-sizing: border-box;
+            border: 1px solid #8a8886;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            padding: 0 16px;
+            border-radius: 2px;
+            min-width: 80px;
+            height: 32px;
+            background-color: #fff;
+            margin: 0 10px;
+          }
+          .cancelButton:hover{
+            background-color: #eaeaea;
+          }
+        }
+    }
+  }
+
+  .modalInnerHTMLImg{
+    height: 150px;
+    display: flex;
+    margin: auto;
+    width: auto;
+    object-fit: cover;
+  }
