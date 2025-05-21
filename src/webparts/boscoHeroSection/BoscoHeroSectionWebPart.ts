@@ -9,17 +9,20 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'BoscoHeroSectionWebPartStrings';
 import BoscoHeroSection from './components/BoscoHeroSection';
-import { BuildResponseType, dayStrings, IBoscoHeroSectionProps, monthStrings } from './components/IBoscoHeroSectionProps';
+import { BuildResponseType, IBoscoHeroSectionProps, IUserProps } from './components/IBoscoHeroSectionProps';
 import { PropertyFieldBgUpload } from './backgroundUpload/BgUploadPropertyPane';
-import { DataHandler } from './utils/Helpers';
+import { DataHandler, GraphDataHandler } from './utils/Helpers';
 import { IBlobProps } from './backgroundUpload/IBgUploadPropertyPaneProps';
 import { UtilFunctions } from './utils/UtilFuncs';
-import { IButtonGridCellProps } from '@fluentui/react';
+import { Service } from './utils/Service';
+import { responseBuilder } from './utils/BuildResponse';
+import { MSGraphClientV3 } from '@microsoft/sp-http';
 
 export interface IBoscoHeroSectionWebPartProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString:string;
+  userInfo: IUserProps;
 }
 
 export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBoscoHeroSectionWebPartProps> {
@@ -30,7 +33,8 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
       {
         backgroundImage: this.properties.backgroundImage,
         title: this.properties.title,
-        fullDateString: this.properties.fullDateString
+        fullDateString: this.properties.fullDateString,
+        userInfo: this.properties.userInfo
       }
     );
 
@@ -38,35 +42,26 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
   }
 
   protected async onInit() {
-    // try{
-    //   await this.checkAndCreateFolders();
-    // }catch(error){
-    //   console.log(error);
-    // }
 
-    // this.buildDateString();
-
+    const client: MSGraphClientV3 = await this.context.msGraphClientFactory.getClient('3');
+    const svc = new Service(new DataHandler(), new GraphDataHandler(client), new UtilFunctions(), new responseBuilder());
     const utils = new UtilFunctions();
-    try{
-      const response:BuildResponseType = await utils.checkMainFolder(this.context);
-      if(!response.success){
-        console.log(response);
-      }
-    }catch(error){
-      console.log(error);
+    
+    const checkMainFolderResponse:BuildResponseType = await svc.checkMainFolder(this.context);
+    if(!checkMainFolderResponse.success){
+      console.log(checkMainFolderResponse);
     }
 
-    try{
-      const response:BuildResponseType = await utils.checkSiteFolder(this.context);
-      if(!response.success){
-        console.log(response);
-      }
-    }catch(error){
-      console.log(error);
+    const checkSiteFolderResponse:BuildResponseType = await svc.checkSiteFolder(this.context);
+    if(!checkSiteFolderResponse.success){
+      console.log(checkSiteFolderResponse);
     }
     
     const fullDate = utils.buildDateString();
     this.properties.fullDateString = fullDate.data;
+
+    const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
+    this.properties.userInfo = getMeInformationResponse.data
     
   }
 

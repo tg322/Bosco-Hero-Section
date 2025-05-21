@@ -1,7 +1,5 @@
-import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { BuildResponseType, dayStrings, monthStrings } from "../components/IBoscoHeroSectionProps";
+import { BuildResponseType, dayStrings, IUserProps, monthStrings, User } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
-import { DataHandler } from "./Helpers";
 
 export class UtilFunctions{
 
@@ -27,59 +25,15 @@ export class UtilFunctions{
         return 'th';
     }
 
-    public async checkMainFolder(context:WebPartContext):Promise<BuildResponseType>{
+    public prepareUserInfo(userData:any, userPhoto:string){
 
-        const dataHandler = new DataHandler();
+        const initials = userData.displayName[0] + userData.displayName.split(" ")[1][0]; //add exist check
 
-        try{
-            const mainFolder = await dataHandler.checkFolderExistsInSP(context, window.location.origin, 'Shared Documents', context.manifest.alias);
-            if(mainFolder.success){
-                if(!mainFolder.data.value){
-                    try{
-                        await dataHandler.createFolderInSP(context, window.location.origin, 'Shared Documents', context.manifest.alias);
-                    }catch(error){
-                        const response = this.responseBuilder.buildResponse(false, 'checkMainFolder was unable to create the main folder.',undefined, error);
-                        return Promise.reject(response);
-                    }
-                }
-            }
-        }catch(error){
-            const response = this.responseBuilder.buildResponse(false, 'checkSiteFolder was unable to check the existance of the site folder.',undefined, error);
-            return Promise.reject(response);
-        }
+        const userInfo:IUserProps = new User(userData.givenName, userData.displayName, initials, userData.id, userPhoto);
 
-        const response = this.responseBuilder.buildResponse(true, 'Main folder has been initialised.');
+        const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'User data prepared successfully.', userInfo);
 
-        return Promise.resolve(response);
-
-    }
-
-    public async checkSiteFolder(context:WebPartContext):Promise<BuildResponseType>{
-
-        const dataHandler = new DataHandler();
-
-        try{
-            const siteFolder = await dataHandler.checkFolderExistsInSP(context, window.location.origin, 'Shared Documents/'+context.manifest.alias, context.pageContext.site.id.toString());
-            if(siteFolder.success){
-                if(!siteFolder.data.value){
-                    try{
-                        await dataHandler.createFolderInSP(context, window.location.origin, 'Shared Documents/'+context.manifest.alias, context.pageContext.site.id.toString());
-                    }catch(error){
-                        const response = this.responseBuilder.buildResponse(false, 'checkSiteFolder was unable to create the site folder.',undefined, error);
-                        return Promise.reject(response);
-                    }
-                }
-            }
-        }catch(error){
-            const response = this.responseBuilder.buildResponse(false, 'checkSiteFolder was unable to check the existance of the site folder.',undefined, error);
-            return Promise.reject(response);
-        }
-
-        const response = this.responseBuilder.buildResponse(true, 'Site folder has been initialised.');
-
-        return Promise.resolve(response);
-
-    }
-
+        return response
+    }   
 
 }

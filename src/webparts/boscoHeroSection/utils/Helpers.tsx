@@ -1,6 +1,7 @@
 import { SPHttpClient, SPHttpClientResponse, MSGraphClientV3 } from "@microsoft/sp-http";
 import { BuildResponseType } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 
 
@@ -75,14 +76,15 @@ export class GraphDataHandler{
      * @beta
      */
 
-    async getMe(): Promise<BuildResponseType>{
+    async getMe(filters?:string): Promise<BuildResponseType>{
         return new Promise(async (resolve, reject) => {
 
-            const query = `/me`;
+            const query = `/me?${filters}`;
+            
+            //query builder $select=displayName,photo,givenName
 
             try {
                 const response = await this.graphClient.api(query).version("v1.0").header("ConsistencyLevel", "eventual").get();
-                console.log(response)
                 resolve(this.responseBuilder.buildResponse(true, 'Users fetched successfully.', response));
             } catch (error:any) {
                 if(error.statusCode === 404){
@@ -120,7 +122,7 @@ export class DataHandler {
      * @beta
      */
 
-    async getFormDigestValue(context: any, urlLocation:string): Promise<BuildResponseType> {
+    async getFormDigestValue(context: WebPartContext, urlLocation:string): Promise<BuildResponseType> {
         return new Promise(async (resolve, reject) => { // Ensure the executor function is async
             try {
                 // Since context.spHttpClient.post is async, we need to await it
@@ -161,7 +163,7 @@ export class DataHandler {
      * @beta
      */
 
-    async createFolderInSP(context: any, urlLocation:string, folderLocation: string, folderName:string): Promise<BuildResponseType>{
+    async createFolderInSP(context: WebPartContext, urlLocation:string, folderLocation: string, folderName:string): Promise<BuildResponseType>{
         return new Promise(async (resolve, reject) => {
         const getFormDigestValueResponse = await this.getFormDigestValue(context, urlLocation);
 
@@ -191,13 +193,13 @@ export class DataHandler {
               });
           
               if(response.ok){
-                resolve(this.responseBuilder.buildResponse(true, 'Folder created successfully.'));
+                resolve(this.responseBuilder.buildResponse(true, `Folder ${folderName} created successfully.`));
               } else {
-                resolve(this.responseBuilder.buildResponse(false, 'Error creating folder.',null,response.statusText));
+                resolve(this.responseBuilder.buildResponse(false, `Error creating folder ${folderName}.`,null,response.statusText));
               }
           
               }catch(error){
-                reject(this.responseBuilder.buildResponse(false, 'Error creating folder.',null,error));
+                reject(this.responseBuilder.buildResponse(false, `Error creating folder ${folderName}.`,null,error));
               }
         
       });
@@ -221,7 +223,7 @@ export class DataHandler {
      * @beta
      */
     
-    async checkFolderExistsInSP(context: any, urlLocation:string, folderLocation: string, folderName: string): Promise<BuildResponseType>{
+    async checkFolderExistsInSP(context: WebPartContext, urlLocation:string, folderLocation: string, folderName: string): Promise<BuildResponseType>{
 
         return new Promise(async (resolve, reject) => { 
         const formDigestValueResponse = await this.getFormDigestValue(context, urlLocation);
@@ -243,15 +245,19 @@ export class DataHandler {
                 .then((response: SPHttpClientResponse) => {
                     if(response.ok) {
                     response.json().then((exists: boolean) => {
-                        resolve(this.responseBuilder.buildResponse(true, 'Folder existance checked successfully.', exists));
+                        if(exists){
+                            resolve(this.responseBuilder.buildResponse(true, `Folder ${folderName} exists.`, exists));
+                        }else{
+                            resolve(this.responseBuilder.buildResponse(true, `Folder ${folderName} does not exist.`, exists));
+                        }
                     });
                     }
                     else {
-                        resolve(this.responseBuilder.buildResponse(false, 'Could not check the existance of folder.', '', response.statusText));
+                        resolve(this.responseBuilder.buildResponse(false, `Could not check the existance of ${folderName} folder.`, '', response.statusText));
                     }
                 });
             }catch(error){
-                reject(this.responseBuilder.buildResponse(false, 'Could not check the existance of folder.', '', error));
+                reject(this.responseBuilder.buildResponse(false, `Could not check the existance of ${folderName} folder.`, '', error));
             }
         }else{
             return formDigestValueResponse
@@ -276,7 +282,7 @@ export class DataHandler {
      * @beta
      */
 
-    async deleteFileFromSP(context: any, urlLocation:string, folderLocation: string, fileName: string): Promise<BuildResponseType> {
+    async deleteFileFromSP(context: WebPartContext, urlLocation:string, folderLocation: string, fileName: string): Promise<BuildResponseType> {
         return new Promise(async (resolve, reject) => { 
         const formDigestValueResponse = await this.getFormDigestValue(context, urlLocation);
 
@@ -284,33 +290,31 @@ export class DataHandler {
             return formDigestValueResponse
         }
 
-            try{
-                const url = `${urlLocation}/_api/web/getfilebyserverrelativeurl('/${folderLocation}/${fileName}')`;
-                const headers = {
-                  'Accept': 'application/json;odata=nometadata',
-                  'Content-Type': 'application/json;odata=verbose',
-                  'odata-version': '',
-                  'X-RequestDigest': formDigestValueResponse.data,
-                  'IF-MATCH': '*',
-                  'X-HTTP-Method': 'DELETE'
-                };
+        try{
+            const url = `${urlLocation}/_api/web/getfilebyserverrelativeurl('/${folderLocation}/${fileName}')`;
+            const headers = {
+                'Accept': 'application/json;odata=nometadata',
+                'Content-Type': 'application/json;odata=verbose',
+                'odata-version': '',
+                'X-RequestDigest': formDigestValueResponse.data,
+                'IF-MATCH': '*',
+                'X-HTTP-Method': 'DELETE'
+            };
 
-                context.spHttpClient.post(url, SPHttpClient.configurations.v1, {
-                    headers: headers
-                })
-                .then((response: SPHttpClientResponse) => {
-                  if(response.ok) {
-                    resolve(this.responseBuilder.buildResponse(true, 'File deleted successfully.'));
-                  }
-                  else {
-                    resolve(this.responseBuilder.buildResponse(false, 'File could not be deleted.', '', response.statusText));
-                  }
-                });
-            }catch(error){
-                reject(this.responseBuilder.buildResponse(false, 'File could not be deleted.', '', error));
-            }
-
-        
+            context.spHttpClient.post(url, SPHttpClient.configurations.v1, {
+                headers: headers
+            })
+            .then((response: SPHttpClientResponse) => {
+                if(response.ok) {
+                    resolve(this.responseBuilder.buildResponse(true, `File ${fileName} deleted successfully.`));
+                }
+                else {
+                    resolve(this.responseBuilder.buildResponse(false, `File ${fileName} could not be deleted.`, '', response.statusText));
+                }
+            });
+        }catch(error){
+            reject(this.responseBuilder.buildResponse(false, `File ${fileName} could not be deleted.`, '', error));
+        }
     });
 }
 
@@ -332,7 +336,7 @@ export class DataHandler {
      * @beta
      */
 
-    async uploadFileToSP(context: any, urlLocation:string, file: File,  folderLocation: string, overwrite: boolean, fileName?:string): Promise<BuildResponseType> {
+    async uploadFileToSP(context: WebPartContext, urlLocation:string, file: File,  folderLocation: string, overwrite: boolean, fileName?:string): Promise<BuildResponseType> {
         //Get formDigestValue
         const formDigestValue = await this.getFormDigestValue(context, urlLocation);
 
@@ -367,9 +371,9 @@ export class DataHandler {
               else {
                     reject(this.responseBuilder.buildResponse(false, 'File could not be uploaded.', null, response.statusText));
                 }
-                    reader.onerror = (error) => {
+                reader.onerror = (error) => {
                     reject(this.responseBuilder.buildResponse(false, 'File could not be read.', null, error));
-                    };
+                };
                 });
             };
             reader.readAsArrayBuffer(file);

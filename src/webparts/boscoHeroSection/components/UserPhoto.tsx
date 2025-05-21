@@ -1,24 +1,25 @@
 import * as React from 'react';
 import { IUserPhotoProps } from './IBoscoHeroSectionProps';
+import styles from './BoscoHeroSection.module.scss';
 
 function UserPhoto(props: IUserPhotoProps){
 
     const{
-        userPhoto,
-        userInitials
+        photo,
+        initials
     } = props
 
 
-    if(userPhoto){
+    if(photo){
         return(
-            <div style={{display:'flex', width:'35px', height:'35px', borderRadius:'150px', backgroundImage:`url(${userPhoto})`, backgroundPosition:'center', backgroundSize:'cover'}}>
+            <div className={`${styles.userPhotoWithPhoto}`} style={{backgroundImage:`url(${photo})`}}>
 
             </div>
         );
     }else{
         return(
-            <div style={{display:'flex', width:'35px', height:'35px', borderRadius:'150px', justifyContent:'center', alignItems:'center', border:'solid 1px white'}}>
-                <p style={{margin:'0px', fontSize:'14px', fontWeight:'600', color:'white'}}>{userInitials}</p>
+            <div className={`${styles.userPhotoInitialsContainer}`}>
+                <p className={`${styles.userPhotoInitials}`}>{initials}</p>
             </div>
         );
     }
