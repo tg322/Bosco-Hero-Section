@@ -23,6 +23,7 @@ export interface IBoscoHeroSectionWebPartProps {
   title:string;
   fullDateString:string;
   userInfo: IUserProps;
+  svc:Service;
 }
 
 export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBoscoHeroSectionWebPartProps> {
@@ -34,7 +35,8 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
         backgroundImage: this.properties.backgroundImage,
         title: this.properties.title,
         fullDateString: this.properties.fullDateString,
-        userInfo: this.properties.userInfo
+        userInfo: this.properties.userInfo,
+        svc: this.properties.svc
       }
     );
 
@@ -44,24 +46,27 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
   protected async onInit() {
 
     const client: MSGraphClientV3 = await this.context.msGraphClientFactory.getClient('3');
-    const svc = new Service(new DataHandler(), new GraphDataHandler(client), new UtilFunctions(), new responseBuilder());
-    const utils = new UtilFunctions();
+    const svc = new Service(new DataHandler(), new GraphDataHandler(client), new UtilFunctions(), new responseBuilder(), this.context);
     
-    const checkMainFolderResponse:BuildResponseType = await svc.checkMainFolder(this.context);
+    const checkMainFolderResponse:BuildResponseType = await svc.checkMainFolder();
     if(!checkMainFolderResponse.success){
       console.log(checkMainFolderResponse);
     }
 
-    const checkSiteFolderResponse:BuildResponseType = await svc.checkSiteFolder(this.context);
+    const checkSiteFolderResponse:BuildResponseType = await svc.checkSiteFolder();
     if(!checkSiteFolderResponse.success){
       console.log(checkSiteFolderResponse);
     }
     
-    const fullDate = utils.buildDateString();
+    const fullDate = svc.getDate();
     this.properties.fullDateString = fullDate.data;
 
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
-    this.properties.userInfo = getMeInformationResponse.data
+    this.properties.userInfo = getMeInformationResponse.data;
+
+    //const getNewsResponse:BuildResponseType = await svc.getNews(this.context);
+
+    this.properties.svc = svc;
     
   }
 

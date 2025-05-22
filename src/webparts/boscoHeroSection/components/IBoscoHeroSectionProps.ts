@@ -1,10 +1,12 @@
 import { IBlobProps } from "../backgroundUpload/IBgUploadPropertyPaneProps";
+import { Service } from "../utils/Service";
 
 export interface IBoscoHeroSectionProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString: string;
   userInfo: IUserProps;
+  svc:Service;
 }
 
 export interface BuildResponseType {
@@ -43,4 +45,27 @@ export class User implements IUserProps{
     public id:string,
     public photo:string
   ) {}
+}
+
+export interface IPageWithWebPartPromise{
+  page:any;
+  title:Promise<any>
+}
+
+export interface INewsProps{
+  title:string;
+  created:string;
+  url:string;
+  thumbnail:string;
+  author:string;
+}
+
+export class News implements INewsProps{
+  constructor(
+    public title:string,
+    public created:string,
+    public url:string,
+    public thumbnail:string,
+    public author:string
+  ){}
 }

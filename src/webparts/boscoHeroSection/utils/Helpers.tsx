@@ -2,6 +2,7 @@ import { SPHttpClient, SPHttpClientResponse, MSGraphClientV3 } from "@microsoft/
 import { BuildResponseType } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { Guid } from "@microsoft/sp-core-library";
 
 
 
@@ -94,6 +95,36 @@ export class GraphDataHandler{
                 }   
             }
             
+        });
+    }
+
+    async getSitePages(siteID:Guid, query:string):Promise<BuildResponseType>{
+        return new Promise(async (resolve, reject)=>{
+            try{
+                const response = await this.graphClient
+                .api(`/sites/${siteID}/pages?${query}`)
+                .version("v1.0")
+                .header("ConsistencyLevel", "eventual")
+                .get();
+                resolve(this.responseBuilder.buildResponse(true, 'Pages fetched successfully', response));
+            }catch(error){
+                reject(this.responseBuilder.buildResponse(false, 'Pages could not be fetched.', '', error));
+            }
+        });
+    }
+
+    async getSitePageWebparts(siteID:Guid, pageID:string, query?:string):Promise<BuildResponseType>{
+        return new Promise(async (resolve, reject)=>{
+            try{
+                const response = await this.graphClient
+                .api(`/sites/${siteID}/pages/${pageID}/microsoft.graph.sitepage/webparts?${query}`)
+                .version("v1.0")
+                .header("ConsistencyLevel", "eventual")
+                .get();
+                resolve(this.responseBuilder.buildResponse(true, 'Page webparts fetched successfully', response));
+            }catch(error){
+                reject(this.responseBuilder.buildResponse(false, 'Page webparts could not be fetched.', '', error));
+            }
         });
     }
 }
@@ -378,6 +409,44 @@ export class DataHandler {
             };
             reader.readAsArrayBuffer(file);
         });
+    }
+
+    async getSitePages(context:WebPartContext, urlLocation:string): Promise<BuildResponseType> {
+        const formDigestValue:BuildResponseType = await this.getFormDigestValue(context, urlLocation);
+
+        if(!formDigestValue.success){
+            return formDigestValue
+        }
+
+        return new Promise((resolve, reject) =>{
+
+            const query = "$orderby=lastModifiedDateTime desc&$top=20&$filter=name ne 'Home.aspx' and name ne 'Our-Schools.aspx' and name ne 'St-Wilfrid''s-Staff.aspx'"
+
+            const url = `${urlLocation}/_api/web/sites/${context.pageContext.site.id}/pages?${query}`;
+
+            const headers = {
+                'Accept': 'application/json;odata=nometadata',
+                'Content-Type': 'application/json;odata=verbose',
+                'odata-version': '',
+                'X-RequestDigest': formDigestValue.data
+            };
+
+            context.spHttpClient.post(url, SPHttpClient.configurations.v1, {
+                headers: headers
+            })
+            .then((response: SPHttpClientResponse) => {
+                if(response.ok) {
+                response.json().then((responseData:any) => {
+                    resolve(this.responseBuilder.buildResponse(true, `Pages returned successfully.`, responseData));
+                });
+                }
+                else {
+                    reject(this.responseBuilder.buildResponse(false, `Could not fetch pages.`, '', response.statusText));
+                }
+            });
+
+        });
+
     }
     
 }

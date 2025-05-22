@@ -1,4 +1,4 @@
-import { BuildResponseType, dayStrings, IUserProps, monthStrings, User } from "../components/IBoscoHeroSectionProps";
+import { BuildResponseType, dayStrings, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
 
 export class UtilFunctions{
@@ -34,6 +34,20 @@ export class UtilFunctions{
         const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'User data prepared successfully.', userInfo);
 
         return response
-    }   
+    }  
+    
+    public prepareNewsItems(newsData:any){
+        const newsPages = newsData.filter((page:any) => page.promotionKind === 'newsPost');
+
+        let newsArray:INewsProps[] = [];
+
+        newsPages.forEach((news:any) => {
+            newsArray.push(new News(news.title, news.createdDateTime, news.webUrl, news.thumbnailWebUrl, news.titleData[0].data.properties.authors[0].name))
+        });
+
+        const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'News prepared successfully.', newsArray)
+
+        return response
+    }
 
 }
