@@ -17,8 +17,10 @@ export interface BuildResponseType {
 }
 
 export const dayStrings = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+export const shortDayStrings = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
 
 export const monthStrings = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+export const shortMonthStrings = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 export interface IUserProps{
   firstName:string;
@@ -54,16 +56,20 @@ export interface IPageWithWebPartPromise{
 
 export interface INewsProps{
   title:string;
-  created:string;
+  created:Date;
   url:string;
   thumbnail:string;
   author:string;
 }
 
+export interface INewsItemProps{
+  newsItem:INewsProps;
+}
+
 export class News implements INewsProps{
   constructor(
     public title:string,
-    public created:string,
+    public created:Date,
     public url:string,
     public thumbnail:string,
     public author:string

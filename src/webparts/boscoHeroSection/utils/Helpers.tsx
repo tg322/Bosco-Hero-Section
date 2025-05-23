@@ -70,7 +70,9 @@ export class GraphDataHandler{
      * Gets current user.
      *
      * @remarks
-     * This method uses the SharePoint Graph API.
+     * This method uses the Microsoft Graph API.
+     * 
+     * @param filters - (Optional) Query filters.
      *
      * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
      *
@@ -81,8 +83,6 @@ export class GraphDataHandler{
         return new Promise(async (resolve, reject) => {
 
             const query = `/me?${filters}`;
-            
-            //query builder $select=displayName,photo,givenName
 
             try {
                 const response = await this.graphClient.api(query).version("v1.0").header("ConsistencyLevel", "eventual").get();
@@ -98,11 +98,26 @@ export class GraphDataHandler{
         });
     }
 
-    async getSitePages(siteID:Guid, query:string):Promise<BuildResponseType>{
+    /**
+     * Fetches all site pages from a specified site.
+     *
+     * @remarks
+     * This method uses the Microsoft Graph API.
+     * 
+     * @param siteID - The site id to fetch pages from.
+     * 
+     * @param filters - (Optional) Query filters.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
+
+    async getSitePages(siteID:Guid, filters?:string):Promise<BuildResponseType>{
         return new Promise(async (resolve, reject)=>{
             try{
                 const response = await this.graphClient
-                .api(`/sites/${siteID}/pages?${query}`)
+                .api(`/sites/${siteID}/pages?${filters}`)
                 .version("v1.0")
                 .header("ConsistencyLevel", "eventual")
                 .get();
@@ -113,11 +128,28 @@ export class GraphDataHandler{
         });
     }
 
-    async getSitePageWebparts(siteID:Guid, pageID:string, query?:string):Promise<BuildResponseType>{
+    /**
+     * Fetches all webpart data from a specified page.
+     *
+     * @remarks
+     * This method uses the Microsoft Graph API.
+     * 
+     * @param siteID - The site id to fetch pages from.
+     * 
+     * @param pageID - The page id to fetch webpart data from.
+     * 
+     * @param filters - (Optional) Query filters.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
+
+    async getSitePageWebparts(siteID:Guid, pageID:string, filters?:string):Promise<BuildResponseType>{
         return new Promise(async (resolve, reject)=>{
             try{
                 const response = await this.graphClient
-                .api(`/sites/${siteID}/pages/${pageID}/microsoft.graph.sitepage/webparts?${query}`)
+                .api(`/sites/${siteID}/pages/${pageID}/microsoft.graph.sitepage/webparts?${filters}`)
                 .version("v1.0")
                 .header("ConsistencyLevel", "eventual")
                 .get();
@@ -368,7 +400,7 @@ export class DataHandler {
      */
 
     async uploadFileToSP(context: WebPartContext, urlLocation:string, file: File,  folderLocation: string, overwrite: boolean, fileName?:string): Promise<BuildResponseType> {
-        //Get formDigestValue
+        
         const formDigestValue = await this.getFormDigestValue(context, urlLocation);
 
         if(!formDigestValue.success){
@@ -409,44 +441,5 @@ export class DataHandler {
             };
             reader.readAsArrayBuffer(file);
         });
-    }
-
-    async getSitePages(context:WebPartContext, urlLocation:string): Promise<BuildResponseType> {
-        const formDigestValue:BuildResponseType = await this.getFormDigestValue(context, urlLocation);
-
-        if(!formDigestValue.success){
-            return formDigestValue
-        }
-
-        return new Promise((resolve, reject) =>{
-
-            const query = "$orderby=lastModifiedDateTime desc&$top=20&$filter=name ne 'Home.aspx' and name ne 'Our-Schools.aspx' and name ne 'St-Wilfrid''s-Staff.aspx'"
-
-            const url = `${urlLocation}/_api/web/sites/${context.pageContext.site.id}/pages?${query}`;
-
-            const headers = {
-                'Accept': 'application/json;odata=nometadata',
-                'Content-Type': 'application/json;odata=verbose',
-                'odata-version': '',
-                'X-RequestDigest': formDigestValue.data
-            };
-
-            context.spHttpClient.post(url, SPHttpClient.configurations.v1, {
-                headers: headers
-            })
-            .then((response: SPHttpClientResponse) => {
-                if(response.ok) {
-                response.json().then((responseData:any) => {
-                    resolve(this.responseBuilder.buildResponse(true, `Pages returned successfully.`, responseData));
-                });
-                }
-                else {
-                    reject(this.responseBuilder.buildResponse(false, `Could not fetch pages.`, '', response.statusText));
-                }
-            });
-
-        });
-
-    }
-    
+    } 
 }

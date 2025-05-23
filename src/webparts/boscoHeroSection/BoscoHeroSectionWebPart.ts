@@ -36,12 +36,14 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
         title: this.properties.title,
         fullDateString: this.properties.fullDateString,
         userInfo: this.properties.userInfo,
-        svc: this.properties.svc
+        svc: this.svc
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
+
+  private svc:Service;
 
   protected async onInit() {
 
@@ -63,10 +65,7 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
 
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;
-
-    //const getNewsResponse:BuildResponseType = await svc.getNews(this.context);
-
-    this.properties.svc = svc;
+    this.svc = svc
     
   }
 

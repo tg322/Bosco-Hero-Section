@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IUserPhotoProps } from './IBoscoHeroSectionProps';
-import styles from './BoscoHeroSection.module.scss';
+import { IUserPhotoProps } from '../IBoscoHeroSectionProps';
+import styles from '../BoscoHeroSection.module.scss';
 
 function UserPhoto(props: IUserPhotoProps){
 

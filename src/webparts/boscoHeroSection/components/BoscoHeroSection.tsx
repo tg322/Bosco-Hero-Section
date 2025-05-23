@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styles from './BoscoHeroSection.module.scss';
 import { type IBoscoHeroSectionProps } from './IBoscoHeroSectionProps';
-import UserWelcome from './UserWelcome';
+import UserWelcome from './User Card/UserWelcome';
+import News from './News/News';
 
 
 export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionProps> {
@@ -10,7 +11,8 @@ export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionP
       backgroundImage,
       title,
       fullDateString,
-      userInfo
+      userInfo,
+      svc
     } = this.props;
 
     return (
@@ -53,12 +55,7 @@ export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionP
               <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'200px', height:'200px', backgroundColor:'#d9d9d975'}}></div>
             </div>
 
-            <div id='newsContainer' style={{display:'grid', gridTemplateColumns:'100%', gridTemplateRows:'auto', gap:'26px', width:'100%'}}>
-              <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'100%', height:'100px', backgroundColor:'#d9d9d975'}}></div>
-              <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'100%', height:'100px', backgroundColor:'#d9d9d975'}}></div>
-              <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'100%', height:'100px', backgroundColor:'#d9d9d975'}}></div>
-              <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'100%', height:'100px', backgroundColor:'#d9d9d975'}}></div>
-            </div>
+            <News svc={svc}/>
 
           </div>
 

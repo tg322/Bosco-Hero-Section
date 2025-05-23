@@ -1,7 +1,7 @@
 import * as React from 'react';
 import UserPhoto from './UserPhoto';
-import { IUser } from './IBoscoHeroSectionProps';
-import styles from './BoscoHeroSection.module.scss';
+import { IUser } from '../IBoscoHeroSectionProps';
+import styles from '../BoscoHeroSection.module.scss';
 
 function UserWelcome(props:IUser){
 

@@ -15,6 +15,16 @@ export class Service{
         private context: WebPartContext
     ) {}
 
+    /**
+     * Reserved for BackgroundUpload Custom Property.
+     * Checks for the existance of the site folder where background images will be stored, if no folder is found, one is created.
+     *
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     * 
+     * @beta
+     */
+
     public async checkSiteFolder(){
 
         const siteFolder:BuildResponseType = await this.dataHandler.checkFolderExistsInSP(this.context, window.location.origin, 'Shared Documents/'+this.context.manifest.alias, this.context.pageContext.site.id.toString());
@@ -83,7 +93,9 @@ export class Service{
             return getPagesResponse
         }
 
-        const pages = getPagesResponse.data.value;
+        const organisedPages:BuildResponseType = this.util.organiseNewsItems(getPagesResponse.data.value);
+
+        const pages = organisedPages.data;
 
         const pairs: IPageWithWebPartPromise[] = pages.map((currentPage:any) => ({
             page: currentPage,
@@ -98,7 +110,6 @@ export class Service{
                 ...page,
                 titleData
             }
-
             
         }));
 
