@@ -115,7 +115,7 @@ export class UtilFunctions{
     
     public prepareNewsItems(newsData:any){
 
-        let newsArray:INewsProps[] = [];
+        const newsArray:INewsProps[] = [];
 
         newsData.forEach((news:any) => {
             const created = new Date(news.createdDateTime);

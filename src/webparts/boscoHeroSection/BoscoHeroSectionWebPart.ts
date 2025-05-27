@@ -8,7 +8,6 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'BoscoHeroSectionWebPartStrings';
-import BoscoHeroSection from './components/BoscoHeroSection';
 import { BuildResponseType, IBoscoHeroSectionProps, IUserProps } from './components/IBoscoHeroSectionProps';
 import { PropertyFieldBgUpload } from './backgroundUpload/BgUploadPropertyPane';
 import { DataHandler, GraphDataHandler } from './utils/Helpers';
@@ -17,6 +16,7 @@ import { UtilFunctions } from './utils/UtilFuncs';
 import { Service } from './utils/Service';
 import { responseBuilder } from './utils/BuildResponse';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
+import BoscoHeroSectionEntryPoint from './components/BoscoHeroSectionEntryPoint';
 
 export interface IBoscoHeroSectionWebPartProps {
   backgroundImage: IBlobProps;
@@ -30,7 +30,7 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
 
   public render(): void {
     const element: React.ReactElement<IBoscoHeroSectionProps> = React.createElement(
-      BoscoHeroSection,
+      BoscoHeroSectionEntryPoint,
       {
         backgroundImage: this.properties.backgroundImage,
         title: this.properties.title,
@@ -45,7 +45,7 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
 
   private svc:Service;
 
-  protected async onInit() {
+  protected async onInit(): Promise<void> {
 
     const client: MSGraphClientV3 = await this.context.msGraphClientFactory.getClient('3');
     const svc = new Service(new DataHandler(), new GraphDataHandler(client), new UtilFunctions(), new responseBuilder(), this.context);
@@ -62,6 +62,9 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
     
     const fullDate = svc.getDate();
     this.properties.fullDateString = fullDate.data;
+
+    const calendar = await svc.getCalendar();
+    console.log(calendar)
 
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;

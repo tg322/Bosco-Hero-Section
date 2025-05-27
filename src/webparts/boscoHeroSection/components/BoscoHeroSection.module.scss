@@ -3,8 +3,6 @@
 .boscoHeroSection {
   display:flex;
   flex-direction: column;
-  // width:100%;
-  // height:400px;
   background-position: center;
   background-size: cover;
   aspect-ratio: 16/6.5;
@@ -23,7 +21,7 @@
   top: 0;
   left: 0;
   background-color: black;
-  opacity: 0.15;
+  opacity: 0.25;
   z-index: 2;
 }
 
@@ -68,8 +66,9 @@
   flex-direction: column;
   box-sizing: border-box;
   padding: 15px;
-  background-color: #d9d9d975;
+  background-color: #5a5a5a75;
   gap: 10px;
+  border-radius: 6px;
 }
 
 .boscoHeroSectionDateContainer{
@@ -88,6 +87,7 @@
   width: 100%;
   justify-content: space-between;
   gap: 15px;
+  
 }
 
 .userWelcomeText{
@@ -119,6 +119,99 @@
   font-size: 14px;
   font-weight: 600;
   color: white;
+}
+
+.boscoNewsContainerSkeleton{
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto;
+  gap: 15px;
+  width: 100%;
+  position: relative;
+}
+
+.boscoNewsSkeletonSpinnerContainer{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.boscoNewsContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.boscoNewsHeadingAndSeeAllContainer{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.boscoNewsHeading{
+  margin: 0px;
+  font-weight: 400;
+}
+
+.boscoNewsSeeAllButton{
+  display: flex;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+}
+
+.boscoNewsItemsContainer{
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 15px;
+  width: 100%;
+}
+
+@media (max-width: 1846px) {
+    .boscoNewsItemsContainer{
+      grid-template-rows: repeat(3, 1fr);
+    }
+    .boscoNewsItemContainer:nth-of-type(4){
+      display:none;
+    }
+}
+
+@media (max-width: 1554px) {
+    .boscoNewsItemsContainer{
+      grid-template-rows: repeat(2, 1fr);
+    }
+    
+    .boscoNewsItemContainer:nth-of-type(3){
+      display:none;
+    }
+}
+
+.boscoNewsItemContainer{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  background-color: #5a5a5a75;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 6px;
+  overflow: hidden;
+  &:hover{
+    h3{
+      text-decoration: underline;
+    }
+  }
 }
 
 :global {

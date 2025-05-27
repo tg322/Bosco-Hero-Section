@@ -159,6 +159,21 @@ export class GraphDataHandler{
             }
         });
     }
+
+    async getCalendarItems(groupID:string, startDateTime:string, endDateTime:string, top:number){
+        return new Promise(async (resolve, reject) => {
+            try{
+                const response = await this.graphClient
+                .api(`/groups/${groupID}/calendarView?startDateTime=${startDateTime}&endDateTime=${endDateTime}&$top=${top}`)
+                .version("v1.0")
+                .header("ConsistencyLevel", "eventual")
+                .get();
+                resolve(this.responseBuilder.buildResponse(true, 'Trust calendar items fetched successfully.', response));
+            }catch(error){
+                reject(this.responseBuilder.buildResponse(true, 'Error fetching calendar items.', undefined, error));
+            }
+        })
+    }
 }
 
 
@@ -441,5 +456,5 @@ export class DataHandler {
             };
             reader.readAsArrayBuffer(file);
         });
-    } 
+    }
 }

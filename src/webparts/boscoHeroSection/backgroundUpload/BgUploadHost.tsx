@@ -7,6 +7,7 @@ import { Icon, Spinner } from "office-ui-fabric-react";
 import styles from './BgUpload.module.scss';
 import Modal from './Modal';
 import { DataHandler } from "./Helpers";
+import { BuildResponseType } from "../components/IBoscoHeroSectionProps";
 
 
 
@@ -62,11 +63,11 @@ export default class PropertyFieldBgUploadHost extends React.Component<
     }
   }
 
-handleFileUpload = async (file: File) => {
+handleFileUpload = async (file: File): Promise<void> => {
 
   this.setState({ isUploading: true, isVisible: false });
 
-  let result:any;
+  let result:BuildResponseType;
   const fileType = file.name.slice(file.name.lastIndexOf('.'));
 
   
@@ -74,7 +75,7 @@ handleFileUpload = async (file: File) => {
 
     result = await this.dataHandler.uploadFileToSP(this.props.context, this.props.urlLocation, file,  this.props.libraryName, true, this.props.fileName+fileType);
 
-    let fileObject: { [keys: string]: any; } = {};
+    const fileObject: { [keys: string]: any; } = {};
 
     fileObject.fileName = this.props.fileName+fileType;
 
@@ -103,7 +104,7 @@ handleFileUpload = async (file: File) => {
   
 }
 
-handleModalToggle = () => {
+handleModalToggle = ():void => {
   this.setState(prevState => ({ modalVisible: !prevState.modalVisible }));
 }
 
@@ -126,7 +127,7 @@ handleClick = async () => {
 };
 
 //The async handleFileRemove function that removes the file from sharepoint
-handleFileRemove = async (fileName:any) => {
+handleFileRemove = async (fileName:string) => {
     try{
       await this.dataHandler.deleteFileFromSP(this.props.context, this.props.urlLocation, this.props.libraryName, fileName);
     }catch(error){

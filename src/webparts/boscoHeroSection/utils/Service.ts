@@ -122,6 +122,11 @@ export class Service{
         return this.util.buildDateString();
     }
 
+    public async getCalendar(){
+        const today = new Date();
+        const newDate = new Date(new Date(today.toDateString()).setMonth(today.getMonth() + 1));
+        return await this.graphHandler.getCalendarItems('1d3d56b6-30ac-4a22-8586-c9537b2b7cea', today.toDateString(), newDate.toDateString(), 4);
+    }
 
 
 
