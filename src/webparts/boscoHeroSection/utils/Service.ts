@@ -125,7 +125,15 @@ export class Service{
     public async getCalendar(){
         const today = new Date();
         const newDate = new Date(new Date(today.toDateString()).setMonth(today.getMonth() + 1));
-        return await this.graphHandler.getCalendarItems('1d3d56b6-30ac-4a22-8586-c9537b2b7cea', today.toDateString(), newDate.toDateString(), 4);
+        const getCalendarItemsResponse:BuildResponseType = await this.graphHandler.getCalendarItems('1d3d56b6-30ac-4a22-8586-c9537b2b7cea', today.toDateString(), newDate.toDateString(), 4);
+
+        if(!getCalendarItemsResponse.success){
+            return getCalendarItemsResponse
+        }
+
+        const prepareCalendarEventsResponse:BuildResponseType = this.util.prepareCalendarEvents(getCalendarItemsResponse.data.value);
+
+        return prepareCalendarEventsResponse
     }
 
 

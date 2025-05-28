@@ -75,3 +75,21 @@ export class News implements INewsProps{
     public author:string
   ){}
 }
+
+export interface ICalendarItemProps{
+  subject:string;
+  startDate:Date;
+  endDate:Date;
+  startTime:string;
+  endTime:string;
+}
+
+export class CalendarItem implements ICalendarItemProps{
+  constructor(
+    public subject:string,
+    public startDate:Date,
+    public endDate:Date,
+    public startTime:string,
+    public endTime:string
+  ){}
+}

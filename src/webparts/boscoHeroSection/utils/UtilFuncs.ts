@@ -1,4 +1,4 @@
-import { BuildResponseType, dayStrings, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
+import { BuildResponseType, CalendarItem, dayStrings, ICalendarItemProps, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
 
 export class UtilFunctions{
@@ -125,6 +125,32 @@ export class UtilFunctions{
         const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'News prepared successfully.', newsArray)
 
         return response
+    }
+
+    public prepareCalendarEvents(calendarItems:any){
+        const calendarItemsArray:ICalendarItemProps[] = [];
+
+        calendarItems.forEach((calendarItem:any) => {
+            const startDate = new Date(calendarItem.start.dateTime);
+            const endDate = new Date(calendarItem.end.dateTime);
+
+            const startTime = this.formatTime(startDate);
+
+            const endTime = this.formatTime(endDate)
+
+            calendarItemsArray.push(new CalendarItem(calendarItem.subject, startDate, endDate, startTime, endTime));
+        });
+
+        const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'Calendar items prepared successfully.', calendarItemsArray);
+
+        return response
+    }
+
+    private formatTime(date:Date):string{
+        const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+
+        return `${hours}:${minutes}`
     }
 
 }

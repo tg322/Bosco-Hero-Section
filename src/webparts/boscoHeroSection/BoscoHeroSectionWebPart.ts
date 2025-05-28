@@ -64,12 +64,12 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
     this.properties.fullDateString = fullDate.data;
 
     const calendar = await svc.getCalendar();
-    console.log(calendar)
+    console.log(calendar);
 
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;
-    this.svc = svc
-    
+    this.svc = svc;
+
   }
 
   protected onDispose(): void {
