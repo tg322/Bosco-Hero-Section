@@ -49,7 +49,7 @@ function News(props:INewsComponentProps, spinnerProps:Partial<SpinnerProps>){
         return(
             <div className={`${styles.boscoNewsContainer}`}>
                 <div className={`${styles.boscoNewsHeadingAndSeeAllContainer}`}>
-                    <h3 className={`${styles.boscoNewsHeading}`}>Weekly Reflections</h3>
+                    <h2 className={`${styles.boscoNewsHeading}`}>Weekly Reflections</h2>
                     <a href='https://boscocet.sharepoint.com/_layouts/15/news.aspx?title=Weekly%20Reflections' className={`${styles.boscoNewsSeeAllButton}`}>
                         <span>See All</span>
                     </a>

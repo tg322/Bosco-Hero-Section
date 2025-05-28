@@ -3,6 +3,7 @@ import styles from './BoscoHeroSection.module.scss';
 import { type IBoscoHeroSectionProps } from './IBoscoHeroSectionProps';
 import UserWelcome from './User Card/UserWelcome';
 import News from './News/News';
+import BoscoLogo from '../assets/logo-no-cross.png'
 
 
 export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionProps> {
@@ -25,7 +26,10 @@ export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionP
             <div className={`${styles.boscoHeroSectionTitleAndUserRow}`}>
 
               <div className={`${styles.boscoHeroSectionTitleContainer}`}>
-                <h1 className={`${styles.boscoHeroSectionTitle}`}>{title}</h1>
+                <div style={{display:'flex', flexDirection:'row', gap:'10px'}}>
+                  <h1 className={`${styles.boscoHeroSectionTitle}`}>{title}</h1>
+                  <img style={{height:'56px'}} src={`${BoscoLogo}`}/>
+                </div>
                 <div className={`${styles.boscoHeroSectionTitleUnderline}`}></div>
               </div>
 
@@ -40,12 +44,12 @@ export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionP
             <div id='bottomRowContainer' style={{display:'flex', flexDirection:'row', width:'100%', gap:'20px', alignItems:'end'}}>
               <div style={{display:'flex', flexDirection:'column', width:'100%', gap:'15px'}}>
                 <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'end', width:'fit-content'}}>
-                    <h3 style={{margin:'0px', fontWeight:'400'}}>Upcoming Events</h3>
+                    <h2 style={{margin:'0px', fontWeight:'600'}}>Upcoming Events</h2>
                 </div>
                 <div id='calendarContainer' style={{display:'grid', gridTemplateColumns:'160px 160px 160px', gridTemplateRows:'160px 160px', gap:'10px'}}>
                   <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'160px', height:'160px', backgroundColor:'#5a5a5a75', justifyContent:'space-between', borderRadius:'6px'}}>
                     <div id='date' style={{display:'flex', flexDirection:'row', alignItems:'center', width:'100%', justifyContent:'center'}}>
-                      <h2 style={{margin:'0px'}}>22 Jul</h2>
+                      <h3 style={{margin:'0px'}}>22 Jul</h3>
                     </div>
                     
                     <p style={{margin:'0px', fontSize:'14px', fontWeight:'500'}}>DSL: Network Meeting</p>

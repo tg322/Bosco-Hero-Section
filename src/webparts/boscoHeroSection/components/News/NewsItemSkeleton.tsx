@@ -7,7 +7,7 @@ function NewsItemSkeleton(){
 
             </div>
             
-            <div id='newsContentContainer' style={{display:'flex', flexDirection:'column', padding:'15px', boxSizing:'border-box', justifyContent:'space-between'}}>
+            <div id='newsContentContainer' style={{display:'flex', flexDirection:'column', padding:'15px', boxSizing:'border-box', gap:'10px'}}>
                 <div style={{display:'flex', width:'140px', height:'20px', backgroundColor:'#d9d9d975'}}>
 
                 </div>

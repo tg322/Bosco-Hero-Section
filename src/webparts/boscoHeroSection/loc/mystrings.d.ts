@@ -17,3 +17,8 @@ declare module 'BoscoHeroSectionWebPartStrings' {
   const strings: IBoscoHeroSectionWebPartStrings;
   export = strings;
 }
+
+declare module '*.png' {
+  const value: string;
+  export default value;
+}
