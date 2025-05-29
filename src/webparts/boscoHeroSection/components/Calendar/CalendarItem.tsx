@@ -1,9 +1,29 @@
 import * as React from 'react';
+import { ICalendarItemProps, shortMonthStrings } from '../IBoscoHeroSectionProps';
+import styles from '../BoscoHeroSection.module.scss';
+import { useCalendarContext } from './CalendarContext';
 
-function CalendarItem(){
+function CalendarItem(props:ICalendarItemProps){
+    const{
+        calendarEvent
+    } = props
+
+    const{calendarDispatch} = useCalendarContext();
+
+    function openModal(){
+        calendarDispatch({type:'SET_CALENDAR_EVENT', payload:calendarEvent})
+        calendarDispatch({type:'TOGGLE_MODAL', payload:true})
+    }
 
     return(
-        <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'160px', height:'160px', backgroundColor:'#5a5a5a75'}}></div>
+        <div className={`${styles.boscoCalendarItemContainer}`} onClick={openModal}>
+            <div className={`${styles.boscoCalendarItemDateContainer}`}>
+                <h3 className={`${styles.boscoCalendarItemDate}`}>{calendarEvent.startDate.getDate()} {shortMonthStrings[calendarEvent.startDate.getMonth()]}</h3>
+            </div>
+            
+            <p className={`${styles.boscoCalendarItemSubject}`}>{calendarEvent.subject}</p>
+            <p className={`${styles.boscoCalendarItemStartEndTime}`}>{calendarEvent.startTime} to {calendarEvent.endTime}</p>
+        </div>
     );
 }
 

@@ -1,21 +1,65 @@
 import * as React from 'react';
+import CalendarItem from './CalendarItem';
+import styles from '../BoscoHeroSection.module.scss';
+import { CalendarLtrRegular } from '@fluentui/react-icons';
+import Modal from '../../Modal/Modal';
+import { BuildResponseType, ICalendarEventProps, shortMonthStrings } from '../IBoscoHeroSectionProps';
+import { useEffect, useState } from 'react';
+import { useServiceContext } from '../ServiceContext';
+import { useCalendarContext } from './CalendarContext';
+import ModalButtonBar from '../../Modal/ModalActionBar';
 
 function Calendar(){
 
-    return(
-        <div id='calendarContainer' style={{display:'grid', gridTemplateColumns:'160px 160px 160px', gridTemplateRows:'160px 160px', gap:'10px'}}>
-            <div style={{display:'flex', flexDirection:'column', boxSizing:'border-box', padding:'15px', width:'160px', height:'160px', backgroundColor:'#5a5a5a75', justifyContent:'space-between'}}>
-            <div id='date' style={{display:'flex', flexDirection:'row', alignItems:'center', width:'100%', justifyContent:'center'}}>
-                <h2 style={{margin:'0px'}}>22 Jul</h2>
-            </div>
-            
-            <p style={{margin:'0px', fontSize:'14px', fontWeight:'500'}}>DSL: Network Meeting</p>
-            <p style={{margin:'0px', fontSize:'12px'}}>8:30 am to 9:30 am</p>
-            </div>
-            
-        </div>
+    const[calendarEvents, setCalendarEvents] = useState<Array<ICalendarEventProps> | null>(null);
 
-    );
+    const {svc} = useServiceContext();
+    const{calendarState} = useCalendarContext();
+
+    async function getCalendarEvents(){
+        const response:BuildResponseType = await svc.getCalendar();
+        console.log(response)
+        if(!response.success){
+            console.log(response);
+        }else{
+            setCalendarEvents(response.data);
+        }
+        
+    }
+
+    useEffect(()=>{
+        getCalendarEvents();
+    },[])
+    if(!calendarEvents){
+        return(
+            <h1>Hello World</h1>
+        );
+    }else{
+        return(
+            <>
+                <div className={`${styles.boscoCalendarContainer}`}>
+                    <div className={`${styles.boscoCalendarTitleContainer}`}>
+                        <h2 className={`${styles.boscoCalendarTitle}`}>Upcoming Events</h2>
+                    </div>
+                    <div className={`${styles.boscoCalendarItemsContainer}`}>
+                        {calendarEvents.map((calendarEvent:ICalendarEventProps, key:number) => {
+                            return(
+                                <CalendarItem calendarEvent={calendarEvent} key={key}/>
+                            )
+                        })}
+                    </div>
+                </div>
+                <Modal title='Event' titleIcon={<CalendarLtrRegular/>} open={calendarState.showModal}>
+                    {calendarState.calendar.calendarEvent && 
+                    <>
+                        <h2>{calendarState.calendar.calendarEvent.startDate.getDate()} {shortMonthStrings[calendarState.calendar.calendarEvent.startDate.getMonth()]}</h2>
+                        <h4>{calendarState.calendar.calendarEvent.subject}</h4>
+                        <ModalButtonBar/>
+                    </>
+                    }
+                </Modal>
+            </>
+        );
+    }
 }
-
 export default Calendar
