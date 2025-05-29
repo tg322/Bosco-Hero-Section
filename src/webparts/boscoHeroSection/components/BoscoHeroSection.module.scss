@@ -121,13 +121,62 @@
   color: white;
 }
 
-.boscoNewsContainerSkeleton{
+.boscoSkeletonNewsContainer{
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: auto;
   gap: 15px;
   width: 100%;
   position: relative;
+}
+
+.boscoSkeletonNewsItemContainer{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  background-color: #5a5a5a75;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.boscoSkeletonNewsItemThumbnail{
+  height: 100%;
+  width: 100px;
+  display: flex;
+  background-color: #5a5a5a75;
+}
+
+.boscoSkeletonNewsItemContentContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+.boscoSkeletonNewsItemTitle{
+  display: flex;
+  width: 140px;
+  height: 20px;
+  background-color: #5a5a5a75;
+}
+
+.boscoSkeletonNewsItemDetailsContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.boscoSkeletonNewsItemDetails{
+  display: flex;
+  width: 110px;
+  height: 10px;
+  background-color: #5a5a5a75;
 }
 
 .boscoNewsSkeletonSpinnerContainer{
@@ -181,25 +230,6 @@
   width: 100%;
 }
 
-@media (max-width: 1846px) {
-    .boscoNewsItemsContainer{
-      grid-template-rows: repeat(3, 1fr);
-    }
-    .boscoNewsItemContainer:nth-of-type(4){
-      display:none;
-    }
-}
-
-@media (max-width: 1554px) {
-    .boscoNewsItemsContainer{
-      grid-template-rows: repeat(2, 1fr);
-    }
-    
-    .boscoNewsItemContainer:nth-of-type(3){
-      display:none;
-    }
-}
-
 .boscoNewsItemContainer{
   display: flex;
   flex-direction: row;
@@ -217,6 +247,124 @@
     }
   }
 }
+
+.boscoCalendarContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.boscoCalendarTitleContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: fit-content;
+}
+
+.boscoCalendarTitle{
+  margin: 0px;
+  font-weight: 600;
+}
+
+.boscoCalendarItemsContainer{
+  display: grid;
+  grid-template-columns: 160px 160px 160px;
+  grid-template-rows: 160px 160px;
+  gap: 10px;
+}
+
+.boscoCalendarItemContainer{
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 15px;
+  width: 160px;
+  height: 160px;
+  background-color: #5a5a5a75;
+  justify-content: space-between;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover{
+    .boscoCalendarItemSubject{
+      text-decoration: underline;
+    }
+  }
+}
+
+.boscoCalendarItemDateContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.boscoCalendarItemDate{
+  margin: 0px;
+}
+
+.boscoCalendarItemSubject{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;       /* Limit to 3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3em;          /* Optional: match to your design */
+  max-height: calc(1.3em * 3); /* Ensures height matches line clamp */
+  margin: 0px;
+  font-size: 14px;
+  
+}
+
+.boscoCalendarItemStartEndTime{
+  margin: 0px;
+  font-size: 12px;
+}
+
+@media (max-width: 1846px) {
+    .boscoNewsItemsContainer{
+      grid-template-rows: repeat(3, 1fr);
+    }
+    .boscoNewsItemContainer:nth-of-type(4){
+      display:none;
+    }
+    .boscoSkeletonNewsItemContainer:nth-of-type(4){
+      display:none;
+    }
+}
+
+@media (max-width: 1554px) {
+    .boscoNewsItemsContainer{
+      grid-template-rows: repeat(2, 1fr);
+    }
+    
+    .boscoNewsItemContainer:nth-of-type(3){
+      display:none;
+    }
+
+    .boscoSkeletonNewsItemContainer:nth-of-type(3){
+      display:none;
+    }
+
+    .boscoCalendarItemsContainer{
+      grid-template-rows: 160px;
+    }
+
+    .boscoCalendarItemContainer:nth-of-type(4){
+      display:none;
+    }
+
+    .boscoCalendarItemContainer:nth-of-type(5){
+      display:none;
+    }
+
+    .boscoCalendarItemContainer:nth-of-type(6){
+      display:none;
+    }
+}
+
 
 :global {
   .CanvasComponent.LCS .CanvasZone {

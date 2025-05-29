@@ -1,26 +1,20 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Service } from '../../utils/Service';
 import { BuildResponseType, INewsProps } from '../IBoscoHeroSectionProps';
 import NewsItem from './NewsItem';
 import NewsItemSkeleton from './NewsItemSkeleton';
 import { Spinner, SpinnerProps } from '@fluentui/react-components';
 import styles from '../BoscoHeroSection.module.scss';
+import { useServiceContext } from '../ServiceContext';
 
-interface INewsComponentProps{
-    svc:Service;
-}
 
-function News(props:INewsComponentProps, spinnerProps:Partial<SpinnerProps>){
+function News(spinnerProps:Partial<SpinnerProps>){
 
     const[news, setNews] = useState<Array<INewsProps> | null>(null);
 
     let array = [1,2,3,4]
 
-    const{
-        svc
-    } = props
-
+    const{svc} = useServiceContext();
     async function getNews(){
         const response:BuildResponseType = await svc.getNews();
         if(response.success){
@@ -34,7 +28,7 @@ function News(props:INewsComponentProps, spinnerProps:Partial<SpinnerProps>){
 
     if(!news){
         return(
-            <div className={`${styles.boscoNewsContainerSkeleton}`} id='newsContainerSkeleton'>
+            <div className={`${styles.boscoSkeletonNewsContainer}`} id='newsContainerSkeleton'>
                 <div className={`${styles.boscoNewsSkeletonSpinnerContainer}`}>
                     <Spinner {...spinnerProps} />
                 </div>

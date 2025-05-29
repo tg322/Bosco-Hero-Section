@@ -1,21 +1,28 @@
 import * as React from 'react';
-import { type IBoscoHeroSectionProps } from './IBoscoHeroSectionProps';
+import { IBoscoHeroSectionEntryProps} from './IBoscoHeroSectionProps';
 // import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import BoscoHeroSection from './BoscoHeroSection';
+import { ServiceProvider } from './ServiceContext';
+import { CalendarProvider } from './Calendar/CalendarContext';
 
 
-export default class BoscoHeroSectionEntryPoint extends React.Component<IBoscoHeroSectionProps> {
-  public render(): React.ReactElement<IBoscoHeroSectionProps> {
+export default class BoscoHeroSectionEntryPoint extends React.Component<IBoscoHeroSectionEntryProps> {
+  public render(): React.ReactElement<IBoscoHeroSectionEntryProps> {
     const {
       backgroundImage,
       title,
       fullDateString,
       userInfo,
-      svc
+      context
     } = this.props;
 
     return (
-        <BoscoHeroSection backgroundImage={backgroundImage} title={title} fullDateString={fullDateString} userInfo={userInfo} svc={svc}/>
+      <ServiceProvider context={context}>
+        <CalendarProvider>
+          <BoscoHeroSection backgroundImage={backgroundImage} title={title} fullDateString={fullDateString} userInfo={userInfo}/>
+        </CalendarProvider>
+      </ServiceProvider>
+        
     );
   }
 }

@@ -5,10 +5,10 @@ import {
   type IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'BoscoHeroSectionWebPartStrings';
-import { BuildResponseType, IBoscoHeroSectionProps, IUserProps } from './components/IBoscoHeroSectionProps';
+import { BuildResponseType, IBoscoHeroSectionEntryProps, IUserProps } from './components/IBoscoHeroSectionProps';
 import { PropertyFieldBgUpload } from './backgroundUpload/BgUploadPropertyPane';
 import { DataHandler, GraphDataHandler } from './utils/Helpers';
 import { IBlobProps } from './backgroundUpload/IBgUploadPropertyPaneProps';
@@ -23,27 +23,25 @@ export interface IBoscoHeroSectionWebPartProps {
   title:string;
   fullDateString:string;
   userInfo: IUserProps;
-  svc:Service;
+  context:WebPartContext;
 }
 
 export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBoscoHeroSectionWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IBoscoHeroSectionProps> = React.createElement(
+    const element: React.ReactElement<IBoscoHeroSectionEntryProps> = React.createElement(
       BoscoHeroSectionEntryPoint,
       {
         backgroundImage: this.properties.backgroundImage,
         title: this.properties.title,
         fullDateString: this.properties.fullDateString,
         userInfo: this.properties.userInfo,
-        svc: this.svc
+        context: this.context
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
-
-  private svc:Service;
 
   protected async onInit(): Promise<void> {
 
@@ -63,12 +61,8 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
     const fullDate = svc.getDate();
     this.properties.fullDateString = fullDate.data;
 
-    const calendar = await svc.getCalendar();
-    console.log(calendar);
-
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;
-    this.svc = svc;
 
   }
 

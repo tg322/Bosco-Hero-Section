@@ -1,12 +1,19 @@
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { IBlobProps } from "../backgroundUpload/IBgUploadPropertyPaneProps";
-import { Service } from "../utils/Service";
 
 export interface IBoscoHeroSectionProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString: string;
   userInfo: IUserProps;
-  svc:Service;
+}
+
+export interface IBoscoHeroSectionEntryProps {
+  backgroundImage: IBlobProps;
+  title:string;
+  fullDateString: string;
+  userInfo: IUserProps;
+  context:WebPartContext;
 }
 
 export interface BuildResponseType {
@@ -76,7 +83,7 @@ export class News implements INewsProps{
   ){}
 }
 
-export interface ICalendarItemProps{
+export interface ICalendarEventProps{
   subject:string;
   startDate:Date;
   endDate:Date;
@@ -84,7 +91,11 @@ export interface ICalendarItemProps{
   endTime:string;
 }
 
-export class CalendarItem implements ICalendarItemProps{
+export interface ICalendarContextEventProps{
+  calendarEvent: ICalendarEventProps | null;
+}
+
+export class CalendarItem implements ICalendarEventProps{
   constructor(
     public subject:string,
     public startDate:Date,
@@ -92,4 +103,8 @@ export class CalendarItem implements ICalendarItemProps{
     public startTime:string,
     public endTime:string
   ){}
+}
+
+export interface ICalendarItemProps{
+  calendarEvent: ICalendarEventProps;
 }

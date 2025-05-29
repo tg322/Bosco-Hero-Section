@@ -1,19 +1,20 @@
 import * as React from 'react';
+import styles from '../BoscoHeroSection.module.scss';
 
 function NewsItemSkeleton(){
     return(
-        <div style={{display:'flex', flexDirection:'row', boxSizing:'border-box', width:'100%', height:'100px', backgroundColor:'#d9d9d975', textDecoration:'none', color:'inherit', borderRadius:'6px', overflow:'hidden'}}>
-            <div id='newsThumbnailContainer' style={{height:'100%', width:'100px', display:'flex', backgroundColor:'#d9d9d975'}}>
+        <div className={`${styles.boscoSkeletonNewsItemContainer}`}>
+            <div className={`${styles.boscoSkeletonNewsItemThumbnail}`}>
 
             </div>
             
-            <div id='newsContentContainer' style={{display:'flex', flexDirection:'column', padding:'15px', boxSizing:'border-box', gap:'10px'}}>
-                <div style={{display:'flex', width:'140px', height:'20px', backgroundColor:'#d9d9d975'}}>
+            <div className={`${styles.boscoSkeletonNewsItemContentContainer}`}>
+                <div className={`${styles.boscoSkeletonNewsItemTitle}`}>
 
                 </div>
 
-                <div id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column', gap:'4px'}}>
-                    <div style={{display:'flex', width:'110px', height:'10px', backgroundColor:'#d9d9d975'}}></div>
+                <div className={`${styles.boscoSkeletonNewsItemDetailsContainer}`}>
+                    <div className={`${styles.boscoSkeletonNewsItemDetails}`}></div>
                 </div>
             </div>
         </div>
