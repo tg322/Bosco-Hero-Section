@@ -1,4 +1,4 @@
-import { BuildResponseType, CalendarItem, dayStrings, ICalendarItemProps, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
+import { BuildResponseType, CalendarItem, dayStrings, ICalendarEventProps, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
 import { responseBuilder } from "./BuildResponse";
 
 export class UtilFunctions{
@@ -128,9 +128,13 @@ export class UtilFunctions{
     }
 
     public prepareCalendarEvents(calendarItems:any){
-        const calendarItemsArray:ICalendarItemProps[] = [];
+        const calendarItemsArray:ICalendarEventProps[] = [];
 
-        calendarItems.forEach((calendarItem:any) => {
+        const sortedCalendarItems = calendarItems.sort((a:any,b:any)=>{
+            return a.start.dateTime - b.end.dateTime
+        });
+
+        sortedCalendarItems.forEach((calendarItem:any) => {
             const startDate = new Date(calendarItem.start.dateTime);
             const endDate = new Date(calendarItem.end.dateTime);
 
