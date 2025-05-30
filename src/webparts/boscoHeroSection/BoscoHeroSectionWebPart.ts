@@ -64,6 +64,9 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;
 
+    const getUsersResponse = await svc.getNewsAuthorDetails();
+    console.log(getUsersResponse.data);
+
   }
 
   protected onDispose(): void {
