@@ -1,11 +1,18 @@
 import * as React from 'react';
+import { IModalActionBarProps } from './IModalProps';
+import styles from './Modal.module.scss';
 
-function ModalButtonBar(){
+function ModalActionBar(props:IModalActionBarProps){
+
+    const{
+        children
+    } = props
+
     return(
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-end'}}>
-            <button style={{backgroundColor:'#006f89', padding:'8px 20px', borderRadius:'4px', cursor: 'pointer', color:'white', fontWeight:'600', border:'none'}}>Close</button>
+        <div className={`${styles.modalActionBar}`}>
+            {children}
         </div>
     );
 }
 
-export default ModalButtonBar
+export default ModalActionBar
