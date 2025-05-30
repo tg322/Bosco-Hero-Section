@@ -1,20 +1,16 @@
 import * as React from 'react';
 import CalendarItem from './CalendarItem';
 import styles from '../BoscoHeroSection.module.scss';
-import { CalendarLtrRegular } from '@fluentui/react-icons';
-import Modal from '../../Modal/Modal';
-import { BuildResponseType, ICalendarEventProps, shortMonthStrings } from '../IBoscoHeroSectionProps';
+import { BuildResponseType, ICalendarEventProps } from '../IBoscoHeroSectionProps';
 import { useEffect, useState } from 'react';
 import { useServiceContext } from '../ServiceContext';
-import { useCalendarStateContext } from './CalendarContext';
-import ModalButtonBar from '../../Modal/ModalActionBar';
+import CalendarModal from './CalendarModal';
 
 function Calendar(){
 
     const[calendarEvents, setCalendarEvents] = useState<Array<ICalendarEventProps> | null>(null);
 
     const {svc} = useServiceContext();
-    const{calendarState} = useCalendarStateContext();
 
     async function getCalendarEvents(){
         const response:BuildResponseType = await svc.getCalendar();
@@ -48,15 +44,7 @@ function Calendar(){
                         })}
                     </div>
                 </div>
-                <Modal title='Event' titleIcon={<CalendarLtrRegular/>} open={calendarState.showModal}>
-                    {calendarState.calendar && 
-                    <>
-                        <h2>{calendarState.calendar.startDate.getDate()} {shortMonthStrings[calendarState.calendar.startDate.getMonth()]}</h2>
-                        <h4>{calendarState.calendar.subject}</h4>
-                        <ModalButtonBar/>
-                    </>
-                    }
-                </Modal>
+                <CalendarModal/>
             </>
         );
     }
