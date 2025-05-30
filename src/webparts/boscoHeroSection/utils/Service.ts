@@ -136,6 +136,16 @@ export class Service{
         return prepareCalendarEventsResponse
     }
 
+    public async getNewsAuthorDetails(){
+        const getUsersResponse:BuildResponseType = await this.graphHandler.getUsers("$filter=mail eq 'dcarter@boscocet.org.uk'&$select=id,displayName,department,companyName,jobTitle,officeLocation,mail,businessPhones");
+
+        if(!getUsersResponse.success){
+            return getUsersResponse
+        }
+
+        return getUsersResponse
+    }
+
 
 
 }
