@@ -91,10 +91,6 @@ export interface ICalendarEventProps{
   endTime:string;
 }
 
-export interface ICalendarContextEventProps{
-  calendarEvent: ICalendarEventProps | null;
-}
-
 export class CalendarItem implements ICalendarEventProps{
   constructor(
     public subject:string,

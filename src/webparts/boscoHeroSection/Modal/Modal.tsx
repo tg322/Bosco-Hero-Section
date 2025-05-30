@@ -3,7 +3,7 @@ import styles from './Modal.module.scss';
 import { DismissRegular } from '@fluentui/react-icons';
 import type { FluentIconsProps } from '@fluentui/react-icons';
 import { type ReactElement}  from 'react';
-import { useCalendarContext } from '../components/Calendar/CalendarContext';
+import { useCalendarDispatchContext } from '../components/Calendar/CalendarContext';
 
 type TitleIcon = 
   ReactElement<FluentIconsProps>
@@ -24,7 +24,7 @@ function Modal(props: IModalProps){
     children
   } = props
 
-  const{calendarDispatch} = useCalendarContext();
+  const{calendarDispatch} = useCalendarDispatchContext();
 
   function close(){
     calendarDispatch({type:'TOGGLE_MODAL',payload:false})

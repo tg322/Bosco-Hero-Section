@@ -6,7 +6,7 @@ import Modal from '../../Modal/Modal';
 import { BuildResponseType, ICalendarEventProps, shortMonthStrings } from '../IBoscoHeroSectionProps';
 import { useEffect, useState } from 'react';
 import { useServiceContext } from '../ServiceContext';
-import { useCalendarContext } from './CalendarContext';
+import { useCalendarStateContext } from './CalendarContext';
 import ModalButtonBar from '../../Modal/ModalActionBar';
 
 function Calendar(){
@@ -14,11 +14,10 @@ function Calendar(){
     const[calendarEvents, setCalendarEvents] = useState<Array<ICalendarEventProps> | null>(null);
 
     const {svc} = useServiceContext();
-    const{calendarState} = useCalendarContext();
+    const{calendarState} = useCalendarStateContext();
 
     async function getCalendarEvents(){
         const response:BuildResponseType = await svc.getCalendar();
-        console.log(response)
         if(!response.success){
             console.log(response);
         }else{
@@ -50,10 +49,10 @@ function Calendar(){
                     </div>
                 </div>
                 <Modal title='Event' titleIcon={<CalendarLtrRegular/>} open={calendarState.showModal}>
-                    {calendarState.calendar.calendarEvent && 
+                    {calendarState.calendar && 
                     <>
-                        <h2>{calendarState.calendar.calendarEvent.startDate.getDate()} {shortMonthStrings[calendarState.calendar.calendarEvent.startDate.getMonth()]}</h2>
-                        <h4>{calendarState.calendar.calendarEvent.subject}</h4>
+                        <h2>{calendarState.calendar.startDate.getDate()} {shortMonthStrings[calendarState.calendar.startDate.getMonth()]}</h2>
+                        <h4>{calendarState.calendar.subject}</h4>
                         <ModalButtonBar/>
                     </>
                     }

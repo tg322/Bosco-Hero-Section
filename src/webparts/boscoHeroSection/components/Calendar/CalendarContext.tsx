@@ -1,34 +1,31 @@
-// NavigationContextProvider.tsx
 import * as React from 'react';
 import { createContext, useContext, useReducer } from 'react';
-import { ICalendarContextEventProps, ICalendarEventProps } from '../IBoscoHeroSectionProps';
-
-//Define the interface for the useReducer, this is the state value so whatever you intend to put inside it will be the type, using a string array here.
+import { ICalendarEventProps } from '../IBoscoHeroSectionProps';
 
 interface CalendarState {
-  calendar: ICalendarContextEventProps;
+  calendar: ICalendarEventProps | null;
   showModal:boolean;
 }
 
-//The actions to be run, this still confuses me.
+//The type of actions and what they expect
 
 type Action =
   | { type: 'SET_CALENDAR_EVENT'; payload: ICalendarEventProps }
   | { type: 'RESET_CALENDAR_EVENT'; }
   | { type: 'TOGGLE_MODAL'; payload: boolean };
 
-const initialState: CalendarState = { calendar: {calendarEvent:null}, showModal:false };
 
+const initialState: CalendarState = { calendar:null, showModal:false };
 
-//Create the reducer function (I hate all the const functions wtf is this all about.)
+//Actions and how they interact with the state
+
 const navigationReducer = (calendarState: CalendarState, action: Action): CalendarState => {
 
-//Switch statement for actions and their... actions?
     switch (action.type) {
         case 'SET_CALENDAR_EVENT':
-            return { ...calendarState, calendar: {calendarEvent:action.payload} };
+            return { ...calendarState, calendar:action.payload};
         case 'RESET_CALENDAR_EVENT':
-          return { ...calendarState, calendar: {calendarEvent:null} };
+          return { ...calendarState, calendar:null};
         case 'TOGGLE_MODAL':
             return { ...calendarState, showModal:action.payload };
         default:
@@ -36,36 +33,49 @@ const navigationReducer = (calendarState: CalendarState, action: Action): Calend
     }
 };
 
-//Create the context function (Another one...)
-const CalendarContext = createContext<{
+//Separate state and dispatch contexts, useful for components that only need state or dispatch, reducing re-renders
+
+const CalendarStateContext = createContext<{
     calendarState: CalendarState;
-    calendarDispatch: React.Dispatch<Action>;
   } | undefined>(undefined);
-  
-//Create the context instance
 
-  export const useCalendarContext = () => {
-    const context = useContext(CalendarContext);
-    if (!context) {
-      throw new Error('useCalendarContext must be used within a CalendarProvider');
-    }
-    return context;
-  };
+const CalendarDispatchContext = createContext<{
+  calendarDispatch: React.Dispatch<Action>;
+} | undefined>(undefined);
 
-  //Interface to give children a type of ReactNode (A JSX component) as any will cause sticky bugs later down the line.
+export const useCalendarStateContext = () => {
+  const context = useContext(CalendarStateContext);
+  if (!context) {
+    throw new Error('useCalendarStateContext must be used within a CalendarProvider');
+  }
+  return context;
+};
+
+export const useCalendarDispatchContext = () => {
+  const context = useContext(CalendarDispatchContext);
+  if (!context) {
+    throw new Error('useCalendarDispatchContext must be used within a CalendarProvider');
+  }
+  return context;
+};
+
+//interface to allow children of type ReactNode
   
   interface CalendarProviderProps {
     children: React.ReactNode;
   }
 
-  //Create the localised context wrapper (All components wrapped by this component can access the context.)
+//returning the jsx and surrounding the children with the context providers
+
   export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) => {
     const [calendarState, calendarDispatch] = useReducer(navigationReducer, initialState);
   
     return (
-      <CalendarContext.Provider value={{ calendarState, calendarDispatch }}>
-        {children}
-      </CalendarContext.Provider>
+      <CalendarDispatchContext.Provider value={{ calendarDispatch }}>
+        <CalendarStateContext.Provider value={{ calendarState }}>
+          {children}
+        </CalendarStateContext.Provider>
+      </CalendarDispatchContext.Provider>
     );
   };
   

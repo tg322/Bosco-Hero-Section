@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ICalendarItemProps, shortMonthStrings } from '../IBoscoHeroSectionProps';
 import styles from '../BoscoHeroSection.module.scss';
-import { useCalendarContext } from './CalendarContext';
+import { useCalendarDispatchContext } from './CalendarContext';
 
 function CalendarItem(props:ICalendarItemProps){
     const{
         calendarEvent
     } = props
 
-    const{calendarDispatch} = useCalendarContext();
+    const{calendarDispatch} = useCalendarDispatchContext();
 
     function openModal(){
         calendarDispatch({type:'SET_CALENDAR_EVENT', payload:calendarEvent})
