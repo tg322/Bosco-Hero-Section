@@ -15,6 +15,7 @@ function News(spinnerProps:Partial<SpinnerProps>){
     let array = [1,2,3,4]
 
     const{svc} = useServiceContext();
+    
     async function getNews(){
         const response:BuildResponseType = await svc.getNews();
         if(response.success){
@@ -32,9 +33,9 @@ function News(spinnerProps:Partial<SpinnerProps>){
                 <div className={`${styles.boscoNewsSkeletonSpinnerContainer}`}>
                     <Spinner {...spinnerProps} />
                 </div>
-                {array.map((number:number, key:number) => {
+                {array.map((number:number) => {
                     return(
-                        <NewsItemSkeleton key={key}/>
+                        <NewsItemSkeleton key={number}/>
                     );
                 })}
             </div>

@@ -8,6 +8,8 @@ import { DataHandler, GraphDataHandler } from '../utils/Helpers';
 import { UtilFunctions } from '../utils/UtilFuncs';
 import { responseBuilder } from '../utils/BuildResponse';
 
+//This context serves the svc object to the rest of the app, this allows News and Calendar to fetch their own data.
+
 // === Context Types ===
 interface ServiceContextValue {
   svc: Service;
