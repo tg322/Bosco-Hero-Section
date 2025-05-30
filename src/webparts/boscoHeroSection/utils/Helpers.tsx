@@ -30,10 +30,10 @@ export class GraphDataHandler{
      * @beta
      */
 
-    async getUsers(organisation: string): Promise<BuildResponseType>{
+    async getUsers(filters?:string): Promise<BuildResponseType>{
         return new Promise(async (resolve, reject) => {
 
-            const query = `/users?$count=true&$filter=companyName eq '${organisation}' and accountEnabled eq true&$select=id,displayName,department,companyName,jobTitle,officeLocation,mail,businessPhones`;
+            const query = `/users?${filters}`;
 
             try {
                 const response = await this.graphClient.api(query).version("v1.0").header("ConsistencyLevel", "eventual").get();
