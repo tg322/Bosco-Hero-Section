@@ -66,7 +66,8 @@ export interface INewsProps{
   created:Date;
   url:string;
   thumbnail:string;
-  author:string;
+  authorName:string;
+  authorEmail:string;
 }
 
 export interface INewsItemProps{
@@ -79,7 +80,8 @@ export class News implements INewsProps{
     public created:Date,
     public url:string,
     public thumbnail:string,
-    public author:string
+    public authorName:string,
+    public authorEmail:string
   ){}
 }
 
