@@ -19,7 +19,7 @@ function NewsItem(props:INewsItemProps){
                 <h3 style={{margin:'0px'}}>{newsItem.title}</h3>
 
                 <div id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column'}}>
-                    <span style={{fontSize:'12px'}}>{newsItem.author} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
+                    <span style={{fontSize:'12px'}}>{newsItem.authorName} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
                 </div>
             </div>
         </a>
