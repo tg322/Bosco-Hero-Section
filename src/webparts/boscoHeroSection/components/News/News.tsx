@@ -6,13 +6,12 @@ import NewsItemSkeleton from './NewsItemSkeleton';
 import { Spinner, SpinnerProps } from '@fluentui/react-components';
 import styles from '../BoscoHeroSection.module.scss';
 import { useServiceContext } from '../ServiceContext';
+import { ArrowSyncFilled, NewsRegular } from '@fluentui/react-icons';
 
 
 function News(spinnerProps:Partial<SpinnerProps>){
 
-    const[news, setNews] = useState<Array<INewsProps> | null>(null);
-
-    let array = [1,2,3,4]
+    const[news, setNews] = useState<Array<INewsProps> | null | false>(null);
 
     const{svc} = useServiceContext();
     
@@ -23,24 +22,40 @@ function News(spinnerProps:Partial<SpinnerProps>){
         }
     }
 
+    function refreshNews(){
+        setNews(null);
+        getNews();
+    }
+
     useEffect(()=>{
         getNews();
     },[]);
 
-    if(!news){
+    if(news === null){
         return(
             <div className={`${styles.boscoSkeletonNewsContainer}`} id='newsContainerSkeleton'>
                 <div className={`${styles.boscoNewsSkeletonSpinnerContainer}`}>
                     <Spinner {...spinnerProps} />
                 </div>
-                {array.map((number:number) => {
-                    return(
-                        <NewsItemSkeleton key={number}/>
-                    );
-                })}
+                    <NewsItemSkeleton/>
+                    <NewsItemSkeleton/>
+                    <NewsItemSkeleton/>
+                    <NewsItemSkeleton/>
             </div>
         );
-    }else{
+    }else if(news === false){
+        return(
+            <div className={`${styles.boscoNoNewsContainer}`} id='newsContainerSkeleton'>
+                <div style={{display:'flex', boxSizing:'border-box', gap:'15px', alignItems:'center'}}>
+                        <NewsRegular style={{width:'30px', height:'auto'}}/><h3 className={`${styles.boscoNewsHeading}`}>No News, you're all caught up!</h3>
+                </div>
+                <div className={`${styles.boscoNoNewsRefreshButton}`} onClick={refreshNews}>
+                        <ArrowSyncFilled style={{width:'20px', height:'auto'}}/><span className={`${styles.boscoNewsHeading}`}>Refresh</span>
+                </div>
+            </div>
+        );
+    }
+    else{
         return(
             <div className={`${styles.boscoNewsContainer}`}>
                 <div className={`${styles.boscoNewsHeadingAndSeeAllContainer}`}>
