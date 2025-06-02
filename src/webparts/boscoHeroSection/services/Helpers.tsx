@@ -170,7 +170,7 @@ export class GraphDataHandler{
                 .get();
                 resolve(this.responseBuilder.buildResponse(true, 'Trust calendar items fetched successfully.', response));
             }catch(error){
-                reject(this.responseBuilder.buildResponse(true, 'Error fetching calendar items.', undefined, error));
+                reject(this.responseBuilder.buildResponse(false, 'Error fetching calendar items.', undefined, error));
             }
         })
     }

@@ -193,6 +193,31 @@
   z-index: 2;
 }
 
+.boscoNoNewsContainer{
+  display: flex;
+  flex-direction: column;
+  height:100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap:20px;
+}
+
+.boscoNoNewsRefreshButton{
+  display: flex;
+  box-sizing: border-box;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  &:hover{
+    background-color: #5a5a5a75;
+  }
+}
+
 .boscoNewsContainer{
   display: flex;
   flex-direction: column;

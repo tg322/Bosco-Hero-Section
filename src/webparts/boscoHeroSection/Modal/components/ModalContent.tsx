@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IModalContentProps } from './IModalProps';
+import { IModalContentProps } from '../IModalProps';
 
 function ModalContent(props:IModalContentProps){
 

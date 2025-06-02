@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IModalActionBarProps } from './IModalProps';
-import styles from './Modal.module.scss';
+import { IModalActionBarProps } from '../IModalProps';
+import styles from '../Modal.module.scss';
 
 function ModalActionBar(props:IModalActionBarProps){
 

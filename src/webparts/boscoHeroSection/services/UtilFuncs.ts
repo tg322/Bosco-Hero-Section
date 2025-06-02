@@ -85,17 +85,31 @@ export class UtilFunctions{
      */
 
     public organiseNewsItems(newsData:any){
+        //In rare cases (New SharePoint Online Env), if there are no pages whatsoever, return false.
+        if(newsData.length === 0){
+            const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'No News items found.', false);
+            return response
+        }
+
         const newsPages = newsData.filter((page:any) => page.promotionKind === 'newsPost');
+
+
+        //if filtering by 'newsPost' returns an empty array, return false
+        if(newsPages.length === 0){
+            const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'No News items found.', false);
+            return response
+        }
 
         const sortedPages = newsPages.sort((a:any,b:any)=>{
             return a.createdDateTime - b.createdDateTime
         });
 
+        //A maximum of 4 News items to display on the screen, remove extras.
         if(sortedPages.length > 3){
             sortedPages.splice(4, sortedPages.length - 1);
         }
 
-        const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'News organised successfully.', sortedPages)
+        const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'News items organised successfully.', sortedPages)
 
         return response
     }
@@ -119,13 +133,29 @@ export class UtilFunctions{
 
         newsData.forEach((news:any) => {
             const created = new Date(news.createdDateTime);
-            newsArray.push(new News(news.title, created, news.webUrl, news.thumbnailWebUrl, news.titleData[0].data.properties.authors[0].name))
+
+            //check if webpart header exists and author assigned, else default to createdBy user
+            const authorName = news.titleDataResult?.[0]?.data?.properties?.authors?.[0]?.name ?? news.createdBy.user.displayName;
+            const authorEmail = news.titleDataResult?.[0]?.data?.properties?.authors?.[0]?.email ?? news.createdBy.user.email;
+
+            newsArray.push(new News(news.title, created, news.webUrl, news.thumbnailWebUrl, authorName, authorEmail));
         });
 
         const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'News prepared successfully.', newsArray)
 
         return response
     }
+
+    /**
+     * Takes raw calendar data and transforms into an array of CalendarItem objects.
+     *
+     * 
+     * @param calendarItems - The raw calendar data.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
 
     public prepareCalendarEvents(calendarItems:any){
         const calendarItemsArray:ICalendarEventProps[] = [];
@@ -135,7 +165,9 @@ export class UtilFunctions{
         });
 
         sortedCalendarItems.forEach((calendarItem:any) => {
+
             const startDate = new Date(calendarItem.start.dateTime);
+
             const endDate = new Date(calendarItem.end.dateTime);
 
             const startTime = this.formatTime(startDate);
@@ -149,6 +181,17 @@ export class UtilFunctions{
 
         return response
     }
+
+    /**
+     * Takes raw calendar data and transforms into an array of CalendarItem objects.
+     *
+     * 
+     * @param newsData - The newsData to organise.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
 
     private formatTime(date:Date):string{
         const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();

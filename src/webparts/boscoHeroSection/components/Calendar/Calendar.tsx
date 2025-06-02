@@ -4,11 +4,11 @@ import styles from '../BoscoHeroSection.module.scss';
 import { BuildResponseType, ICalendarEventProps } from '../IBoscoHeroSectionProps';
 import { useEffect, useState } from 'react';
 import { useServiceContext } from '../ServiceContext';
-import CalendarModal from './CalendarModal';
+import CalendarModal from './CalendarModal'
 
 function Calendar(){
 
-    const[calendarEvents, setCalendarEvents] = useState<Array<ICalendarEventProps> | null>(null);
+    const[calendarEvents, setCalendarEvents] = useState<Array<ICalendarEventProps> | null | false>(null);
 
     const {svc} = useServiceContext();
 

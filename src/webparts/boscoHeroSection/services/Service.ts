@@ -97,18 +97,26 @@ export class Service{
 
         const pages = organisedPages.data;
 
+        if(!pages){
+            return organisedPages
+        }
+
         const pairs: IPageWithWebPartPromise[] = pages.map((currentPage:any) => ({
             page: currentPage,
             title: this.graphHandler.getSitePageWebparts(this.context.pageContext.site.id, currentPage.id)
         }));
 
+        // actual id 'cbe7b0a9-3504-44dd-a3a3-0e5cacd07788'
+        // is searching by webpart id the best option here? Should I just select the top most webpart?
+
         const result = await Promise.all(pairs.map(async ({page, title}) =>{
             const webpartData = await title;
-            const titleData = webpartData.data.value.filter((webpart:any) => webpart.webPartType === 'cbe7b0a9-3504-44dd-a3a3-0e5cacd07788')
-            
+            const titleData = webpartData.data.value.filter((webpart:any) => webpart.webPartType === 'cbe7b0a9-3504-44dd-a3a3-0e5cacd07788');
+            const titleDataResult = titleData ? titleData : null;
+
             return{
                 ...page,
-                titleData
+                titleDataResult
             }
             
         }));
@@ -122,10 +130,12 @@ export class Service{
         return this.util.buildDateString();
     }
 
+    //1d3d56b6-30ac-4a22-8586-c9537b2b7cea
+
     public async getCalendar(){
         const today = new Date();
         const newDate = new Date(new Date(today.toDateString()).setMonth(today.getMonth() + 1));
-        const getCalendarItemsResponse:BuildResponseType = await this.graphHandler.getCalendarItems('1d3d56b6-30ac-4a22-8586-c9537b2b7cea', today.toDateString(), newDate.toDateString(), 6);
+        const getCalendarItemsResponse:BuildResponseType = await this.graphHandler.getCalendarItems('1d3d56b6-30af-4a22-8586-c9537b2b7cea', today.toDateString(), newDate.toDateString(), 6);
 
         if(!getCalendarItemsResponse.success){
             return getCalendarItemsResponse
@@ -136,8 +146,8 @@ export class Service{
         return prepareCalendarEventsResponse
     }
 
-    public async getNewsAuthorDetails(){
-        const getUsersResponse:BuildResponseType = await this.graphHandler.getUsers("$filter=mail eq 'dcarter@boscocet.org.uk'&$select=id,displayName,department,companyName,jobTitle,officeLocation,mail,businessPhones");
+    public async getNewsAuthorDetails(email:string){
+        const getUsersResponse:BuildResponseType = await this.graphHandler.getUsers(`$filter=mail eq '${email}'&$select=id,displayName,department,companyName,jobTitle,officeLocation,mail,businessPhones`);
 
         if(!getUsersResponse.success){
             return getUsersResponse

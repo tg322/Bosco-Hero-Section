@@ -3,10 +3,10 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
 
-import { Service } from '../utils/Service';
-import { DataHandler, GraphDataHandler } from '../utils/Helpers';
-import { UtilFunctions } from '../utils/UtilFuncs';
-import { responseBuilder } from '../utils/BuildResponse';
+import { Service } from '../services/Service';
+import { DataHandler, GraphDataHandler } from '../services/Helpers';
+import { UtilFunctions } from '../services/UtilFuncs';
+import { responseBuilder } from '../services/BuildResponse';
 
 //This context serves the svc object to the rest of the app, this allows News and Calendar to fetch their own data.
 

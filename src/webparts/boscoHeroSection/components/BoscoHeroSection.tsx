@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styles from './BoscoHeroSection.module.scss';
 import { type IBoscoHeroSectionProps } from './IBoscoHeroSectionProps';
-import UserWelcome from './User Card/UserWelcome';
-import News from './News/News';
+import UserWelcome from './userCard/UserWelcome';
+import News from './news/News';
 import BoscoLogo from '../assets/logo-no-cross.png'
-import Calendar from './Calendar/Calendar';
+import Calendar from './calendar/Calendar';
 
 export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionProps> {
   public render(): React.ReactElement<IBoscoHeroSectionProps> {

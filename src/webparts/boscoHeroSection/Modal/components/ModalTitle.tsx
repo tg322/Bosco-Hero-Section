@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {IModalTitleProps} from './IModalProps'
-import styles from './Modal.module.scss';
+import {IModalTitleProps} from '../IModalProps'
+import styles from '../Modal.module.scss';
 
 function ModalTitle(props:IModalTitleProps){
 

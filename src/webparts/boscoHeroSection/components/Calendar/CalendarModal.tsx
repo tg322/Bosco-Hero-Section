@@ -2,9 +2,9 @@ import * as React from 'react';
 import Modal from '../../Modal/Modal';
 import { CalendarLtrRegular } from '@fluentui/react-icons';
 import { useCalendarDispatchContext, useCalendarStateContext } from './CalendarContext';
-import ModalContent from '../../Modal/ModalContent';
+import ModalContent from '../../Modal/components/ModalContent';
 import { shortMonthStrings } from '../IBoscoHeroSectionProps';
-import ModalActionBar from '../../Modal/ModalActionBar';
+import ModalActionBar from '../../Modal/components/ModalActionBar';
 import { Button } from '@fluentui/react-components';
 
 function CalendarModal(){

@@ -10,11 +10,11 @@ import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-bas
 import * as strings from 'BoscoHeroSectionWebPartStrings';
 import { BuildResponseType, IBoscoHeroSectionEntryProps, IUserProps } from './components/IBoscoHeroSectionProps';
 import { PropertyFieldBgUpload } from './backgroundUpload/BgUploadPropertyPane';
-import { DataHandler, GraphDataHandler } from './utils/Helpers';
+import { DataHandler, GraphDataHandler } from './services/Helpers';
 import { IBlobProps } from './backgroundUpload/IBgUploadPropertyPaneProps';
-import { UtilFunctions } from './utils/UtilFuncs';
-import { Service } from './utils/Service';
-import { responseBuilder } from './utils/BuildResponse';
+import { UtilFunctions } from './services/UtilFuncs';
+import { Service } from './services/Service';
+import { responseBuilder } from './services/BuildResponse';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
 import BoscoHeroSectionEntryPoint from './components/BoscoHeroSectionEntryPoint';
 
@@ -64,7 +64,7 @@ export default class BoscoHeroSectionWebPart extends BaseClientSideWebPart<IBosc
     const getMeInformationResponse:BuildResponseType = await svc.getMeInformation('$select=displayName,photo,givenName,id');
     this.properties.userInfo = getMeInformationResponse.data;
 
-    const getUsersResponse = await svc.getNewsAuthorDetails();
+    const getUsersResponse = await svc.getNewsAuthorDetails('dcarter@boscocet.org.uk');
     console.log(getUsersResponse.data);
 
   }

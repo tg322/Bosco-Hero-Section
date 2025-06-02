@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styles from './Modal.module.scss';
 import { DismissRegular } from '@fluentui/react-icons';
-import ModalTitle from './ModalTitle';
+import ModalTitle from './components/ModalTitle';
 import { IModalActionBarProps, IModalContentProps, ModalSize } from './IModalProps';
-import ModalContent from './ModalContent';
-import ModalActionBar from './ModalActionBar';
+import ModalContent from './components/ModalContent';
+import ModalActionBar from './components/ModalActionBar';
 
 type ModalContentComponent = React.ReactElement<IModalContentProps, typeof ModalContent>;
 type ModalActionBarComponent = React.ReactElement<IModalActionBarProps, typeof ModalActionBar>
