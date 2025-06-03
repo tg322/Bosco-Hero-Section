@@ -158,6 +158,12 @@ export class UtilFunctions{
      */
 
     public prepareCalendarEvents(calendarItems:any){
+
+        if(calendarItems.length === 0){
+            const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'No events found.', false);
+            return response
+        }
+
         const calendarItemsArray:ICalendarEventProps[] = [];
 
         const sortedCalendarItems = calendarItems.sort((a:any,b:any)=>{
@@ -174,7 +180,7 @@ export class UtilFunctions{
 
             const endTime = this.formatTime(endDate)
 
-            calendarItemsArray.push(new CalendarItem(calendarItem.subject, startDate, endDate, startTime, endTime));
+            calendarItemsArray.push(new CalendarItem(calendarItem.subject, startDate, endDate, startTime, endTime, calendarItem.webLink));
         });
 
         const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'Calendar items prepared successfully.', calendarItemsArray);
