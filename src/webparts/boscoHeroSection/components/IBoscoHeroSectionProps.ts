@@ -91,6 +91,7 @@ export interface ICalendarEventProps{
   endDate:Date;
   startTime:string;
   endTime:string;
+  webLink:string;
 }
 
 export class CalendarItem implements ICalendarEventProps{
@@ -99,7 +100,8 @@ export class CalendarItem implements ICalendarEventProps{
     public startDate:Date,
     public endDate:Date,
     public startTime:string,
-    public endTime:string
+    public endTime:string,
+    public webLink:string
   ){}
 }
 
