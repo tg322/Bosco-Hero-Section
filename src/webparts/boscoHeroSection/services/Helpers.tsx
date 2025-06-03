@@ -23,7 +23,7 @@ export class GraphDataHandler{
      * This method uses the SharePoint Graph API.
      * 
      * 
-     * @param organisation - The organisation to fetch users from.
+     * @param filters - (Optional) Query filters.
      *
      * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
      *
@@ -44,6 +44,19 @@ export class GraphDataHandler{
         
       });
     }
+
+    /**
+     * Fetches user profile photo.
+     *
+     * @remarks
+     * This method uses the Microsoft Graph API.
+     * 
+     * @param id - The user id.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
 
     async getUserPhoto(id: string): Promise<BuildResponseType>{
         return new Promise(async (resolve, reject) => {
@@ -160,6 +173,25 @@ export class GraphDataHandler{
         });
     }
 
+    /**
+     * Fetches calendar events from a specified calendar.
+     *
+     * @remarks
+     * This method uses the Microsoft Graph API.
+     * 
+     * @param groupID - The group (calendar) id.
+     * 
+     * @param startDateTime - The start date range.
+     * 
+     * @param endDateTime - The end date range.
+     * 
+     * @param top - Number of events to fetch.
+     *
+     * @returns Array e.g {success:true, message: 'Data retrieved.', data:{data}}
+     *
+     * @beta
+     */
+
     async getCalendarItems(groupID:string, startDateTime:string, endDateTime:string, top:number):Promise<BuildResponseType>{
         return new Promise(async (resolve, reject) => {
             try{
@@ -168,6 +200,9 @@ export class GraphDataHandler{
                 .version("v1.0")
                 .headers({"ConsistencyLevel": "eventual", 'Prefer': 'outlook.timezone="Europe/London"'})
                 .get();
+                // const testArray = {value:[]}
+                // resolve(this.responseBuilder.buildResponse(true, 'Trust calendar items fetched successfully.', testArray));
+                // console.log(response)
                 resolve(this.responseBuilder.buildResponse(true, 'Trust calendar items fetched successfully.', response));
             }catch(error){
                 reject(this.responseBuilder.buildResponse(false, 'Error fetching calendar items.', undefined, error));
@@ -179,8 +214,6 @@ export class GraphDataHandler{
 export class DataHandler {
 
     private responseBuilder = new responseBuilder();
-
-
 
     /**
      * Gets the FormDigestValue token for making API calls to SharePoint.
