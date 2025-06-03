@@ -1,10 +1,10 @@
 import * as React from 'react';
-import CalendarItem from './CalendarItem';
-import styles from '../BoscoHeroSection.module.scss';
 import { BuildResponseType, ICalendarEventProps } from '../IBoscoHeroSectionProps';
 import { useEffect, useState } from 'react';
 import { useServiceContext } from '../ServiceContext';
-import CalendarModal from './CalendarModal'
+import CalendarDisplayEvents from './states/CalendarDisplayEvents';
+import CalendarLoading from './states/CalendarLoading';
+import CalendarNoEvents from './states/CalendarNoEvents';
 
 function Calendar(){
 
@@ -22,31 +22,28 @@ function Calendar(){
         
     }
 
+    function refreshCalendar(){
+        setCalendarEvents(null);
+        getCalendarEvents();
+    }
+
     useEffect(()=>{
         getCalendarEvents();
     },[])
-    if(!calendarEvents){
+    
+    if(calendarEvents === null){
         return(
-            <h1>Hello World</h1>
+            <CalendarLoading/>
+        );
+    }else if(calendarEvents === false){
+        return(
+            <CalendarNoEvents refreshCalendar={refreshCalendar}/>
         );
     }else{
         return(
-            <>
-                <div className={`${styles.boscoCalendarContainer}`}>
-                    <div className={`${styles.boscoCalendarTitleContainer}`}>
-                        <h2 className={`${styles.boscoCalendarTitle}`}>Upcoming Events</h2>
-                    </div>
-                    <div className={`${styles.boscoCalendarItemsContainer}`}>
-                        {calendarEvents.map((calendarEvent:ICalendarEventProps, key:number) => {
-                            return(
-                                <CalendarItem calendarEvent={calendarEvent} key={key}/>
-                            )
-                        })}
-                    </div>
-                </div>
-                <CalendarModal/>
-            </>
+            <CalendarDisplayEvents calendarEvents={calendarEvents}/>
         );
     }
+    
 }
 export default Calendar
