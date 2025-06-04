@@ -19,7 +19,9 @@
       "./node_modules/@microsoft"
     ],
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "jest",
+      "node"     // optional, if you want Node globals
     ],
     "lib": [
       "es5",
