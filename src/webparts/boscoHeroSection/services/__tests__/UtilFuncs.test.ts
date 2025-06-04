@@ -1,4 +1,4 @@
-import { UtilFunctions } from '../services/UtilFuncs';
+const { UtilFunctions } = require('../UtilFuncs');
 
 describe('UtilFunctions.buildDateString', () => {
     it('should return a formatted date string', () => {
