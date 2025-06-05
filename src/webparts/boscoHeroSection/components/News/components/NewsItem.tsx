@@ -48,7 +48,7 @@ function NewsItem(props:INewsItemProps){
                     <span style={{fontSize:'12px'}}>{newsItem.authorName} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
                 </div>
             </div>
-            {hover && authorDetails && <StaffMemberDetailsToolTip user={authorDetails} />}
+            {hover && authorDetails && <StaffMemberDetailsToolTip user={authorDetails}/>}
         </a>
     );
 }
