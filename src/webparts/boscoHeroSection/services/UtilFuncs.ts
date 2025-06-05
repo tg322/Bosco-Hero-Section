@@ -1,4 +1,5 @@
-import { BuildResponseType, CalendarItem, dayStrings, ICalendarEventProps, INewsProps, IUserProps, monthStrings, News, User } from "../components/IBoscoHeroSectionProps";
+import { BuildResponseType, CalendarItem, dayStrings, ICalendarEventProps, INewsProps, IUserWelcomeProps, monthStrings, News, UserWelcome } from "../components/IBoscoHeroSectionProps";
+import { User } from "../components/staffToolTip/IStaffDirectoryProps";
 import { responseBuilder } from "./BuildResponse";
 
 export class UtilFunctions{
@@ -16,8 +17,8 @@ export class UtilFunctions{
      * @beta
      */
     
-    public buildDateString():BuildResponseType{
-        const date = new Date();
+    public buildDateString(today:Date):BuildResponseType{
+        const date = today;
         const longDay = dayStrings[date.getDay()];
         const longMonth = monthStrings[date.getMonth()]
         const ordinal = this.getOrdinal(date.getDate())
@@ -66,7 +67,7 @@ export class UtilFunctions{
 
         const initials = userData.displayName[0] + userData.displayName.split(" ")[1][0]; //add exist check
 
-        const userInfo:IUserProps = new User(userData.givenName, userData.displayName, initials, userData.id, userPhoto);
+        const userInfo:IUserWelcomeProps = new UserWelcome(userData.givenName, userData.displayName, initials, userData.id, userPhoto);
 
         const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'User data prepared successfully.', userInfo);
 
@@ -87,7 +88,7 @@ export class UtilFunctions{
     public organiseNewsItems(newsData:any){
         //In rare cases (New SharePoint Online Env), if there are no pages whatsoever, return false.
         if(newsData.length === 0){
-            const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'No News items found.', false);
+            const response:BuildResponseType = this.responseBuilder.buildResponse(true, 'No pages found.', false);
             return response
         }
 
@@ -204,6 +205,23 @@ export class UtilFunctions{
         const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
 
         return `${hours}:${minutes}`
+    }
+
+    public prepareAuthorDetails(rawAuthorData:any){
+        const authorDepartments = this.getDepartment(rawAuthorData.department);
+        const authorDetails = new User(rawAuthorData.id,rawAuthorData.displayName, rawAuthorData.jobTitle? rawAuthorData.jobTitle : 'Unassigned', authorDepartments, rawAuthorData.companyName, rawAuthorData.mail, rawAuthorData.businessPhones, rawAuthorData.officeLocation)
+        return this.responseBuilder.buildResponse(true, 'Success', authorDetails)
+    }
+    
+    private getDepartment(userDepartment:string){
+        if(userDepartment.indexOf(',') !== -1){
+            let userDepartmentsArray = userDepartment.split(', ');
+            return userDepartmentsArray
+        }else{
+            const departmentArray = [];
+            departmentArray.push(userDepartment)
+            return departmentArray
+        }
     }
 
 }

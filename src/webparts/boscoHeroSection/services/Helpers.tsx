@@ -37,7 +37,7 @@ export class GraphDataHandler{
 
             try {
                 const response = await this.graphClient.api(query).version("v1.0").header("ConsistencyLevel", "eventual").get();
-                resolve(this.responseBuilder.buildResponse(true, 'Users fetched successfully.', response.value));
+                resolve(this.responseBuilder.buildResponse(true, 'Users fetched successfully.', response));
             } catch (error) {
                 reject(this.responseBuilder.buildResponse(false, 'Error fetching users.',null,error));
             }

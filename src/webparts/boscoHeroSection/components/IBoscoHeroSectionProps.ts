@@ -5,14 +5,14 @@ export interface IBoscoHeroSectionProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString: string;
-  userInfo: IUserProps;
+  userInfo: IUserWelcomeProps;
 }
 
 export interface IBoscoHeroSectionEntryProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString: string;
-  userInfo: IUserProps;
+  userInfo: IUserWelcomeProps;
   context:WebPartContext;
 }
 
@@ -29,7 +29,7 @@ export const shortDayStrings = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat
 export const monthStrings = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 export const shortMonthStrings = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
-export interface IUserProps{
+export interface IUserWelcomeProps{
   firstName:string;
   fullName:string;
   initials:string;
@@ -38,7 +38,7 @@ export interface IUserProps{
 }
 
 export interface IUser{
-  userInfo:IUserProps
+  userInfo:IUserWelcomeProps
 }
 
 export interface IUserPhotoProps{
@@ -46,7 +46,7 @@ export interface IUserPhotoProps{
   photo?:string;
 }
 
-export class User implements IUserProps{
+export class UserWelcome implements IUserWelcomeProps{
   constructor(
     public firstName:string,
     public fullName:string,
@@ -54,6 +54,17 @@ export class User implements IUserProps{
     public id:string,
     public photo:string
   ) {}
+}
+
+export interface IUserProps{
+  id:string;
+  name: string;
+  jobTitle: string;
+  departments:string[];
+  companyName:string;
+  email:string;
+  businessPhones:string[];
+  officeLocation:string;
 }
 
 export interface IPageWithWebPartPromise{

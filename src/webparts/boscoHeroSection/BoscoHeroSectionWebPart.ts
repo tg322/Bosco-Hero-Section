@@ -8,7 +8,7 @@ import {
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'BoscoHeroSectionWebPartStrings';
-import { BuildResponseType, IBoscoHeroSectionEntryProps, IUserProps } from './components/IBoscoHeroSectionProps';
+import { BuildResponseType, IBoscoHeroSectionEntryProps, IUserWelcomeProps } from './components/IBoscoHeroSectionProps';
 import { PropertyFieldBgUpload } from './backgroundUpload/BgUploadPropertyPane';
 import { DataHandler, GraphDataHandler } from './services/Helpers';
 import { IBlobProps } from './backgroundUpload/IBgUploadPropertyPaneProps';
@@ -22,7 +22,7 @@ export interface IBoscoHeroSectionWebPartProps {
   backgroundImage: IBlobProps;
   title:string;
   fullDateString:string;
-  userInfo: IUserProps;
+  userInfo: IUserWelcomeProps;
   context:WebPartContext;
 }
 
