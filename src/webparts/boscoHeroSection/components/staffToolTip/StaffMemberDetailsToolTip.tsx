@@ -2,41 +2,17 @@ import * as React from 'react';
 import { IUserProps } from './IStaffDirectoryProps';
 import { Building20Regular, Call20Regular, Chat20Regular, Mail20Regular } from '@fluentui/react-icons';
 import styles from './StaffToolTip.module.scss';
-import { useEffect, useRef, useState } from 'react';
 import ToolTipContactDetails from './ToolTipContactDetails';
 
 interface IStaffMemberDetailsToolTip{
     user:IUserProps;
-    overflowTop:number | null;
-    leftOffset:string;
-    show:boolean;
-    userPhoto:string;
-    photoBgColor:string;
 }
 
 function StaffMemberDetailsToolTip(props: IStaffMemberDetailsToolTip){
-    const [topOffset, setTopOffset] = useState<string>('100%');
-
-    const toolTipRef = useRef<HTMLDivElement>(null);
 
     const{
-        user,
-        leftOffset,
-        overflowTop,
-        show,
-        userPhoto,
-        photoBgColor
+        user
     } = props
-
-    useEffect(()=>{
-        if(show){
-            if(toolTipRef.current){
-                if(overflowTop && overflowTop < toolTipRef.current.clientHeight){
-                    setTopOffset(`-${toolTipRef.current.clientHeight}px`);
-                }
-            }
-        }
-    },[show])
 
     function handleCallClick(){
         const teamsCallUrl = `https://teams.microsoft.com/l/call/0/0?users=${encodeURIComponent(user.email)}`;
@@ -48,13 +24,11 @@ function StaffMemberDetailsToolTip(props: IStaffMemberDetailsToolTip){
     }
  
     return(
-        <div ref={toolTipRef} className={styles.StaffDirectoryDetailsToolTipWrapper} style={{left:`${leftOffset}`, top:`${topOffset}`, paddingTop:`${topOffset === '100%' ? '10px' : '0px'}`, paddingBottom:`${topOffset === '100%' ? '0px' : '10px'}`}}>
+        <div className={styles.StaffDirectoryDetailsToolTipWrapper} style={{top:'0', left:'0'}}>
             <div className={styles.StaffDirectoryDetailsToolTipContainer}>
                 <div className={styles.StaffDirectoryDetailsToolTipDetailsWrapper}>
-                    <div className={styles.StaffDirectoryDetailsToolTipStaffImage} style={{backgroundImage:`url(${userPhoto})`, backgroundSize:'contain', backgroundPosition:'center', justifyContent:'center', alignItems:'center', backgroundColor:`${photoBgColor}`}}>
-                        {!userPhoto &&
-                            <p style={{margin:'0px', fontSize:'20px', fontWeight:'600', color:'white'}}>{user.name[0] + user.name.charAt(user.name.indexOf(' ')+1)}</p>
-                        }
+                    <div className={styles.StaffDirectoryDetailsToolTipStaffImage} style={{backgroundSize:'contain', backgroundPosition:'center', justifyContent:'center', alignItems:'center', backgroundColor:'darkblue'}}>
+                        <p style={{margin:'0px', fontSize:'20px', fontWeight:'600', color:'white'}}>{user.name[0] + user.name.charAt(user.name.indexOf(' ')+1)}</p>
                     </div>
                     <div className={styles.StaffDirectoryDetailsToolTipDetailsContainer}>
                         <p>{user.name}</p>
