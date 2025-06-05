@@ -270,6 +270,7 @@
   color: inherit;
   border-radius: 6px;
   overflow: hidden;
+  position:relative;
   &:hover{
     h3{
       text-decoration: underline;
@@ -340,6 +341,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;       /* Limit to 3 lines */
+  line-clamp: 3;               /* Standard property for compatibility */
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.3em;          /* Optional: match to your design */
