@@ -141,9 +141,6 @@ export class Service{
             title: this.graphHandler.getSitePageWebparts(this.context.pageContext.site.id, currentPage.id)
         }));
 
-        // actual id 'cbe7b0a9-3504-44dd-a3a3-0e5cacd07788'
-        // is searching by webpart id the best option here? Should I just select the top most webpart?
-
         const result = await Promise.all(pairs.map(async ({page, title}) =>{
             const webpartData = await title;
             const titleData = webpartData.data.value.filter((webpart:any) => webpart.webPartType === 'cbe7b0a9-3504-44dd-a3a3-0e5cacd07788');
@@ -162,10 +159,9 @@ export class Service{
     }
 
     public getDate(){
-        return this.util.buildDateString();
+        const date = new Date();
+        return this.util.buildDateString(date);
     }
-
-    //1d3d56b6-30ac-4a22-8586-c9537b2b7cea
 
     /**
      * Gets calendar events.
@@ -219,9 +215,10 @@ export class Service{
             return getUsersResponse
         }
 
-        return getUsersResponse
+        const prepareAuthorDetailsResponse:BuildResponseType = this.util.prepareAuthorDetails(getUsersResponse.data.value[0])
+        console.log(prepareAuthorDetailsResponse)
+
+        return prepareAuthorDetailsResponse
     }
-
-
 
 }
