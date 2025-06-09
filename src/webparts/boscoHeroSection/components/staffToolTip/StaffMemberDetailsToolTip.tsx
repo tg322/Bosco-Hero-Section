@@ -1,17 +1,20 @@
 import * as React from 'react';
-import { IUserProps } from './IStaffDirectoryProps';
-import { Building20Regular, Call20Regular, Chat20Regular, Mail20Regular } from '@fluentui/react-icons';
+import { ISDUserProps } from '../userToolTip/components/IStaffDirectoryProps';
+import { Building20Regular, Call20Regular } from '@fluentui/react-icons';
 import styles from './StaffToolTip.module.scss';
-import ToolTipContactDetails from './ToolTipContactDetails';
+import ToolTipContactDetails from './components/ToolTipContactDetails';
+import ToolTipActions from './components/ToolTipActions';
 
 interface IStaffMemberDetailsToolTip{
-    user:IUserProps;
+    user:ISDUserProps;
+    overflowLeft:number;
 }
 
 function StaffMemberDetailsToolTip(props: IStaffMemberDetailsToolTip){
 
     const{
-        user
+        user,
+        overflowLeft
     } = props
 
     function handleCallClick(){
@@ -22,10 +25,12 @@ function StaffMemberDetailsToolTip(props: IStaffMemberDetailsToolTip){
         const teamsCallUrl = `https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(user.email)}`;
         window.open(teamsCallUrl, '_blank');
     }
+
+    console.log(overflowLeft);
  
     return(
-        <div className={styles.StaffDirectoryDetailsToolTipWrapper} style={{top:'0', left:'0'}}>
-            <div className={styles.StaffDirectoryDetailsToolTipContainer}>
+        <div className={styles.StaffDirectoryDetailsToolTipWrapper} style={{top:'100px', left:'0', opacity:'1', color:'GrayText', paddingTop:'10px'}}>
+            <div className={styles.StaffDirectoryDetailsToolTipContainer} style={{opacity:'1'}}>
                 <div className={styles.StaffDirectoryDetailsToolTipDetailsWrapper}>
                     <div className={styles.StaffDirectoryDetailsToolTipStaffImage} style={{backgroundSize:'contain', backgroundPosition:'center', justifyContent:'center', alignItems:'center', backgroundColor:'darkblue'}}>
                         <p style={{margin:'0px', fontSize:'20px', fontWeight:'600', color:'white'}}>{user.name[0] + user.name.charAt(user.name.indexOf(' ')+1)}</p>
@@ -35,17 +40,7 @@ function StaffMemberDetailsToolTip(props: IStaffMemberDetailsToolTip){
                         <p style={{textOverflow:'ellipsis', overflow:'hidden', textWrap:'wrap'}}>{user.jobTitle}</p>
                     </div>
                 </div>
-                <div className={styles.StaffDirectoryDetailsToolTipActionsContainer}>
-                    <a className={styles.StaffDirectoryDetailsToolTipActionsEmail} style={{cursor:'pointer'}} onClick={()=> handleChatClick()}>
-                        <Chat20Regular style={{color:'#005670'}}/>
-                    </a>
-                    <a className={styles.StaffDirectoryDetailsToolTipActionsEmail} href={`mailto:${user.email}`}>
-                        <Mail20Regular style={{color:'#005670'}}/>
-                    </a>
-                    <a className={styles.StaffDirectoryDetailsToolTipActionsEmail} style={{cursor:'pointer'}} onClick={()=> handleCallClick()}>
-                        <Call20Regular style={{color:'#005670'}}/>
-                    </a>
-                </div>
+                <ToolTipActions email={user.email} handleCallClick={handleCallClick} handleChatClick={handleChatClick}/>
                 <div className={styles.StaffDirectoryDetailsToolTipFurtherDetailsContainer}>
 
                     { (user.officeLocation || user.businessPhones.length > 0) &&
