@@ -15,12 +15,10 @@ export default class BoscoHeroSection extends React.Component<IBoscoHeroSectionP
       userInfo
     } = this.props;
 
-    
-
     return (
         <section className={`${styles.boscoHeroSection}`} style={{backgroundImage:`url(${backgroundImage ? backgroundImage.blob : ''})`}}>
           <div className={`${styles.boscoHeroSectionOverlay}`}></div>
-          <div className={`${styles.boscoHeroSectionContentContainer}`}>
+          <div id='Bosco-Hero-Section' className={`${styles.boscoHeroSectionContentContainer}`}>
             <div className={`${styles.boscoHeroSectionTitleAndUserRow}`}>
               <div className={`${styles.boscoHeroSectionTitleContainer}`}>
                 <div style={{display:'flex', flexDirection:'row', gap:'10px'}}>
