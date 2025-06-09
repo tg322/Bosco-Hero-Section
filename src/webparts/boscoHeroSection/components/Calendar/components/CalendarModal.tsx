@@ -14,7 +14,7 @@ function CalendarModal(){
     const{calendarState} = useCalendarStateContext();
 
     function close(){
-        calendarDispatch({type:'TOGGLE_MODAL',payload:false})
+        calendarDispatch({type:'TOGGLE_MODAL'})
         calendarDispatch({type:'RESET_CALENDAR_EVENT'})
     }
 
