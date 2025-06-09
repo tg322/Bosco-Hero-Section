@@ -1,55 +1,56 @@
 import * as React from 'react';
 import styles from '../../BoscoHeroSection.module.scss';
-import { BuildResponseType, INewsItemProps, IUserProps, shortMonthStrings } from '../../IBoscoHeroSectionProps';
-import { useState } from 'react';
-import StaffMemberDetailsToolTip from '../../staffToolTip/StaffMemberDetailsToolTip';
+import { BuildResponseType, INewsItemProps, shortMonthStrings } from '../../IBoscoHeroSectionProps';
+import { useEffect, useRef, useState } from 'react';
+import { ISDUserProps } from '../../userToolTip/components/IStaffDirectoryProps';
 import { useServiceContext } from '../../ServiceContext';
+import UserToolTip from '../../userToolTip/UserToolTip';
+import newsFallback from '../../../assets/news-fallback-thumbnail.png'
 
 function NewsItem(props:INewsItemProps){
-
-    const[hover, setHover] = useState<boolean>(true);
-    const[authorDetails, setAuthorDetails] = useState<IUserProps>();
 
     const{
         newsItem
     }= props
+
+    const[hover, setHover] = useState<boolean>(false);
+
+    const hoverElmRef = useRef<HTMLDivElement>(null);
+
+    const[authorDetails, setAuthorDetails] = useState<ISDUserProps | null>(null);
 
     const{svc} = useServiceContext();
 
     async function getAuthorDetails(){
         const response:BuildResponseType = await svc.getNewsAuthorDetails(newsItem.authorEmail);
         if(!response.success){
-            console.log(response)
+            console.log(response);
         }else{
             setAuthorDetails(response.data);
         }
     }
 
-    function onHover(){
-        getAuthorDetails()
-        setHover(true);
-    }
-
-    function outHover(){
-        setHover(false);
-    }
+    useEffect(()=>{
+        getAuthorDetails();
+    },[hover])
 
     return(
-    
+    <div className={`${styles.boscoNewsItemWrapper}`} >
         <a className={`${styles.boscoNewsItemContainer}`} href={newsItem.url} target='_blank' >
-            <div id='newsThumbnailContainer' style={{height:'100%', width:'100px', display:'flex', backgroundImage:`url(${newsItem.thumbnail ? newsItem.thumbnail : ''})`, backgroundPosition:'center', backgroundSize:'cover'}}>
+            <div id='newsThumbnailContainer' style={{height:'100%', width:'100px', display:'flex', backgroundImage:`url(${newsItem.thumbnail ? newsItem.thumbnail : newsFallback})`, backgroundPosition:'center', backgroundSize:'cover', borderRadius:'6px 0px 0px 6px'}}>
 
             </div>
             
             <div id='newsContentContainer' style={{display:'flex', flexDirection:'column', padding:'15px', boxSizing:'border-box', gap:'10px'}}>
                 <h3 style={{margin:'0px'}}>{newsItem.title}</h3>
 
-                <div id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column'}} onMouseEnter={onHover} onMouseLeave={outHover}>
-                    <span style={{fontSize:'12px'}}>{newsItem.authorName} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
+                <div ref={hoverElmRef} id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column', position:'relative'}} onMouseLeave={()=>setHover(false)}>
+                    <span style={{fontSize:'12px'}} onMouseOver={()=>setHover(true)}>{newsItem.authorName} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
+                    {hover && authorDetails && <UserToolTip user={authorDetails} hoverElmRef={hoverElmRef} hover={hover}/>}
                 </div>
             </div>
-            {hover && authorDetails && <StaffMemberDetailsToolTip user={authorDetails}/>}
         </a>
+    </div>
     );
 }
 
