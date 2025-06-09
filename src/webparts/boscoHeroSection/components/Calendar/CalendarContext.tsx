@@ -12,7 +12,7 @@ interface CalendarState {
 type Action =
   | { type: 'SET_CALENDAR_EVENT'; payload: ICalendarEventProps }
   | { type: 'RESET_CALENDAR_EVENT'; }
-  | { type: 'TOGGLE_MODAL'; payload: boolean };
+  | { type: 'TOGGLE_MODAL'; };
 
 
 const initialState: CalendarState = { calendar:null, showModal:false };
@@ -27,7 +27,7 @@ const navigationReducer = (calendarState: CalendarState, action: Action): Calend
         case 'RESET_CALENDAR_EVENT':
           return { ...calendarState, calendar:null};
         case 'TOGGLE_MODAL':
-            return { ...calendarState, showModal:action.payload };
+            return { ...calendarState, showModal: !calendarState.showModal};
         default:
             return calendarState;
     }
