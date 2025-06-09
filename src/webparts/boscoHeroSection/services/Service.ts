@@ -216,8 +216,8 @@ export class Service{
         }
 
         const prepareAuthorDetailsResponse:BuildResponseType = this.util.prepareAuthorDetails(getUsersResponse.data.value[0])
-        console.log(prepareAuthorDetailsResponse)
-
+        
+        
         return prepareAuthorDetailsResponse
     }
 
