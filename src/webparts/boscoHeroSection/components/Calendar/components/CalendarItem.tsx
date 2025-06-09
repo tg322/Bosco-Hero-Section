@@ -12,7 +12,7 @@ function CalendarItem(props:ICalendarItemProps){
 
     function openModal(){
         calendarDispatch({type:'SET_CALENDAR_EVENT', payload:calendarEvent})
-        calendarDispatch({type:'TOGGLE_MODAL', payload:true})
+        calendarDispatch({type:'TOGGLE_MODAL'})
     }
 
     return(
