@@ -4,8 +4,9 @@ import { BuildResponseType, INewsItemProps, shortMonthStrings } from '../../IBos
 import { useEffect, useRef, useState } from 'react';
 import { ISDUserProps } from '../../userToolTip/components/IStaffDirectoryProps';
 import { useServiceContext } from '../../ServiceContext';
-import UserToolTip from '../../userToolTip/UserToolTip';
+// import UserToolTip from '../../userToolTip/UserToolTip';
 import newsFallback from '../../../assets/news-fallback-thumbnail.png'
+import UserToolTip from '../../userToolTip/UserToolTip';
 
 function NewsItem(props:INewsItemProps){
 
@@ -34,9 +35,13 @@ function NewsItem(props:INewsItemProps){
         getAuthorDetails();
     },[hover])
 
+    function handleNewsClick(){
+        window.open(newsItem.url, '_blank');
+    }
+
     return(
     <div className={`${styles.boscoNewsItemWrapper}`} >
-        <a className={`${styles.boscoNewsItemContainer}`} href={newsItem.url} target='_blank' >
+        <div className={`${styles.boscoNewsItemContainer}`} onClick={handleNewsClick}>
             <div id='newsThumbnailContainer' style={{height:'100%', width:'100px', display:'flex', backgroundImage:`url(${newsItem.thumbnail ? newsItem.thumbnail : newsFallback})`, backgroundPosition:'center', backgroundSize:'cover', borderRadius:'6px 0px 0px 6px'}}>
 
             </div>
@@ -44,12 +49,12 @@ function NewsItem(props:INewsItemProps){
             <div id='newsContentContainer' style={{display:'flex', flexDirection:'column', padding:'15px', boxSizing:'border-box', gap:'10px'}}>
                 <h3 style={{margin:'0px'}}>{newsItem.title}</h3>
 
-                <div ref={hoverElmRef} id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column', position:'relative'}} onMouseLeave={()=>setHover(false)}>
+                <div ref={hoverElmRef} id='newsDetails' style={{width:'100%', display:'flex', flexDirection:'column', position:'relative'}} onMouseLeave={()=>setHover(true)}>
                     <span style={{fontSize:'12px'}} onMouseOver={()=>setHover(true)}>{newsItem.authorName} {shortMonthStrings[newsItem.created.getMonth()]} {newsItem.created.getDate()}</span>
                     {hover && authorDetails && <UserToolTip user={authorDetails} hoverElmRef={hoverElmRef} hover={hover}/>}
                 </div>
             </div>
-        </a>
+        </div>
     </div>
     );
 }
