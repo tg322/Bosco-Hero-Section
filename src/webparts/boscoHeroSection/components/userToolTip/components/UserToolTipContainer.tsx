@@ -38,7 +38,7 @@ function UserToolTipContainer(props:IUserToolTipContainerProps){
 
     if(showToolTip){
         return(
-            <div className={styles.StaffDirectoryDetailsToolTipWrapper} style={{top:`${overflowTop}px`, left:`${overflowLeft}px`, opacity:'1', color:'#323130', paddingTop:`${overflowTop === '0' ? '15px' : '0px'}`, cursor:'default', paddingBottom:`${overflowTop === '0' ? '0px' : '25px'}`}}>
+            <div className={styles.StaffDirectoryDetailsToolTipWrapper} style={{top:`${overflowTop}px`, left:`${overflowLeft}px`, opacity:'1', color:'#323130', paddingTop:`${overflowTop === '0' ? '25px' : '0px'}`, paddingBottom:`${overflowTop === '0' ? '0px' : '25px'}`, justifyContent:`${overflowTop === '0' ? 'flex-start' : 'flex-end'}`}} onClick={(e)=> e.stopPropagation()}>
                 <div className={styles.StaffDirectoryDetailsToolTipContainer} style={{borderRadius:'4px'}}>
                     {children}
                 </div>
