@@ -74,7 +74,7 @@ function UserToolTip(props:IUserToolTipProps){
     useEffect(()=>{
         setToolTipHorizontalPosition();
         setToolTipTopPosition();
-    }, [])
+    }, []);
 
     return(
         <UserToolTipContainer overflowLeft={overflowLeft} overflowTop={overflowTop} hover={hover}>
