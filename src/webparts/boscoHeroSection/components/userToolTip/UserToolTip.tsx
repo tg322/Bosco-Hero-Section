@@ -49,6 +49,7 @@ function UserToolTip(props:IUserToolTipProps){
 
     function setToolTipTopPosition(){
         if(hoverElmRef.current){
+            //Get height of viewport
             const screenHeight:number = Math.max(
                 document.body.scrollHeight,
                 document.documentElement.scrollHeight,
@@ -57,7 +58,11 @@ function UserToolTip(props:IUserToolTipProps){
                 document.body.clientHeight,
                 document.documentElement.clientHeight
                 );
+
+            //Get distance between bottom of hover element and bottom of viewport with bottom position of hover element minus height of the viewport.
             const bottomOverflow = screenHeight - hoverElmRef.current.getBoundingClientRect().bottom;
+
+            //If the pixel space between bottom of hover element and bottom of viewport cannot fit the tooltip, set top overflow to position tooltip above hover element.
             if(bottomOverflow < 300){
                 const hoverElmHeight = hoverElmRef.current.clientHeight;
                 const alignTop = 256 + hoverElmHeight
