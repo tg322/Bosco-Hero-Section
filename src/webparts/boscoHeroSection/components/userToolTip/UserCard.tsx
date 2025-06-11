@@ -59,7 +59,7 @@ function UserCard(props:IUserCardProps){
             //If the pixel space between bottom of hover element and bottom of viewport cannot fit the tooltip, set top overflow to position tooltip above hover element.
             if(bottomOverflow < 300){
                 const hoverElmHeight = hoverElmRef.current.clientHeight;
-                const alignTop = 266 + hoverElmHeight
+                const alignTop = 276 + hoverElmHeight
                 setOverflowTop(`-${alignTop}`)
             }
         }
