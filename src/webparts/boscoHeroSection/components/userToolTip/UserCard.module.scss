@@ -1,0 +1,167 @@
+
+//UserCardContainer
+.UserCardWrapper{
+  position: absolute; 
+  display: flex; 
+  flex-direction: column; 
+  background-color: transparent; 
+  box-sizing: border-box;
+  z-index: 999; 
+  width: 350px;
+  max-width: 350px;
+  opacity: 1;
+  color: #323130;
+  cursor: default;
+}
+@keyframes opacityAndScale {
+  from {opacity: 0; transform: scale(0.7);}
+  to {opacity: 1; transform: scale(1);}
+}
+.UserCardContainer{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-sizing: border-box;
+  width: 350px;
+  box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.3);
+  opacity:0;
+  transform: scale(0.8);
+  animation: opacityAndScale 0.2s forwards;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+
+
+
+//UserDetails
+.UserDetailsWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 15px;
+    border-bottom: solid 1px lightgray;
+}
+.UserDetailsContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+.UserProfileImage{
+  width: 70px;
+  height: 70px;
+  border-radius: 200px;
+  background-color: gray;
+  max-width: 70px;
+  max-height: 70px;
+  display: flex;
+  flex-shrink: 0;
+  background-size: contain;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+}
+.UserProfileInitials{
+    margin: 0px;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+}
+.UserNameJobTitleContainer{
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  overflow:hidden;
+  text-decoration: none;
+  h2{
+    margin: 0px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  h4{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: wrap;
+    margin: 0px;
+    font-weight: 400;
+  }
+}
+
+//UserCardActions
+.UserCardActionsContainer{
+  display: flex;
+  flex-direction: row;
+}
+.UserCardActionButton{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  text-decoration: none;
+  user-select: none;
+  color:inherit;
+  p{
+    margin: 0px;
+  }
+  &:hover{
+    background-color: rgb(241, 241, 241);
+  }
+}
+
+//UserInfoContainer
+@keyframes expandTooltipHeight {
+  from {height: 0px;}
+  to {height: 150px;}
+}
+
+.UserInfoWrapper{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding:0px 22px 0px 22px;
+    height: 0px;
+    max-height:150px;
+    overflow-y: auto;
+    animation: expandTooltipHeight 0.4s ease-in 0.4s forwards;
+}
+.UserInfoContainer{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+    gap: 10px;
+}
+
+//UserContactDetails
+.UserContactDetails{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  &:first-of-type{
+    margin-top: 20px;
+  }
+  a{
+    margin: 0px;
+    font-size: 12px;
+    text-decoration: none;
+    color: #005670;
+  }
+  p{
+    margin: 0px;
+    font-size: 12px;
+  }
+}
+
+//UserCardDepartments
+.UserCardDepartments{
+    display: flex;
+    flex-direction: column;
+    p{
+        margin:0px;
+    }
+    span{
+        margin: 0px;
+        font-size: 12px;
+    }
+}

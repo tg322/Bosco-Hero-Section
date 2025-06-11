@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styles from '../StaffToolTip.module.scss';
-import { userColorArray } from './IStaffDirectoryProps';
+import styles from '../UserCard.module.scss';
+import { userColorArray } from './IUserCardProps';
 
 interface IUserDetailsProps{
     name:string;
@@ -18,15 +18,16 @@ function UserDetails(props:IUserDetailsProps){
     const userPhotoBgColor = userColorArray[Math.floor(Math.random() * userColorArray.length)]
 
     return(
-        <div className={styles.StaffDirectoryDetailsToolTipDetailsWrapper}>
-            <div className={styles.StaffDirectoryDetailsToolTipStaffImage} style={{backgroundSize:'contain', backgroundPosition:'center', justifyContent:'center', alignItems:'center', backgroundColor:`${userPhotoBgColor ? userPhotoBgColor : ''}`}}>
-                <p style={{margin:'0px', fontSize:'20px', fontWeight:'600', color:'white'}}>{name[0] + name.charAt(name.indexOf(' ')+1)}</p>
+        
+            <div className={styles.UserDetailsContainer}>
+                <div className={styles.UserProfileImage} style={{backgroundColor:`${userPhotoBgColor ? userPhotoBgColor : ''}`}}>
+                    <p className={styles.UserProfileInitials}>{name[0] + name.charAt(name.lastIndexOf(' ')+1)}</p>
+                </div>
+                <div className={styles.UserNameJobTitleContainer}>
+                    <h2>{name}</h2>
+                    <h4>{jobTitle}</h4>
+                </div>
             </div>
-            <div className={styles.StaffDirectoryDetailsToolTipDetailsContainer}>
-                <h3 style={{margin:'0px', textDecoration:'none'}}>{name}</h3>
-                <p style={{textOverflow:'ellipsis', overflow:'hidden', textWrap:'wrap'}}>{jobTitle}</p>
-            </div>
-        </div>
     );
 }
 
