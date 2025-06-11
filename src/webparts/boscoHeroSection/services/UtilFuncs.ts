@@ -1,5 +1,5 @@
 import { BuildResponseType, CalendarItem, dayStrings, ICalendarEventProps, INewsProps, IUserWelcomeProps, monthStrings, News, UserWelcome } from "../components/IBoscoHeroSectionProps";
-import { User } from "../components/userToolTip/components/IStaffDirectoryProps";
+import { User } from "../components/userToolTip/components/IUserCardProps";
 import { responseBuilder } from "./BuildResponse";
 
 export class UtilFunctions{
